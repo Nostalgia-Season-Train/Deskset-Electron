@@ -1,12 +1,15 @@
 import { createApp } from 'vue'
 import './style.css'
 
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+
 import Desktop from './Desktop.vue'
-import drag from './components/_global/widgetDrag'
+import drag from './global/widgetDrag'
 
 
-// 创建 VUE3 页面
 const app = createApp(Desktop)
 
+app.use(ElementPlus)
 app.use(drag)
 app.mount('#desktop')
