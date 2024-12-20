@@ -1,28 +1,21 @@
-function dragAndDrop() {
-  // 上次移动距离
-  let originX = 0
-  let originY = 0
-
+function dragAndDrop(el) {
   return function down(event) {
+    let originX = el.offsetLeft
+    let originY = el.offsetTop
     let beginX = event.clientX
     let beginY = event.clientY
-    let moveX = 0
-    let moveY = 0
 
-    // 如果没有移动，那么 moveX、moveY 将不被 move 函数计算
     const move = (event) => {
-      moveX = event.clientX - beginX + originX
-      moveY = event.clientY - beginY + originY
+      let moveX = event.clientX - beginX
+      let moveY = event.clientY - beginY
 
-      this.style.transform = `translate(${moveX}px, ${moveY}px)`
+      this.style.position = "fixed"
+
+      this.style.left = moveX + originX + "px"
+      this.style.top  = moveY + originY + "px"
     }
 
     const up = () => {
-      if (moveX !== 0 && moveY !== 0) {
-        originX = moveX
-        originY = moveY
-      }
-
       document.removeEventListener("mousemove", move)
       document.removeEventListener("mouseup", up)
     }
@@ -39,7 +32,7 @@ export default {
     /* widgetDrag 对应 v-widget-drag 指令 */
     app.directive("widgetDrag", {
       mounted: (el, binding) => {
-        binding.value = dragAndDrop()
+        binding.value = dragAndDrop(el)
         el.addEventListener("mousedown", binding.value)
       },
       unmounted: (el, binding) => {
