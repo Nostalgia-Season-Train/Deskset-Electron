@@ -1,6 +1,6 @@
 import { ref } from "vue"
 
-const components = import.meta.glob("../components/**/*.vue", { eager: true })
+const components = import.meta.glob("../components/*/*.vue", { eager: true })
 
 
 let widgets = []
