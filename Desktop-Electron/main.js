@@ -15,12 +15,15 @@ const createWindow = () => {
 
     // 透明
     transparent: true,
-    frame: false
+    frame: false,
+
+    // 不能聚焦，不在任务栏显示
+    focusable: false
   })
   win.loadURL('http://localhost:5173')
 
   // 调试：DevTools 单独窗体，不影响透明效果
-  win.webContents.openDevTools({ mode: 'detach' })
+  // win.webContents.openDevTools({ mode: 'detach' })
 
   // 窗口置底
   const handleBuffer = win.getNativeWindowHandle()
@@ -30,14 +33,10 @@ const createWindow = () => {
     main: {
       library: 'setBottom.dll',
       retType: DataType.I32,
-      paramsType: [DataType.I32]
+      paramsType: [DataType.I32, DataType.I32]
     }
   })
-  setBottom.main([handleNumber])
-
-  win.hookWindowMessage(0x0047, () => {
-    setBottom.main([handleNumber])
-  })
+  console.log(setBottom.main([handleNumber, 0]))
 
   // 透明点击
   const checkTransInterval = setInterval(() => {
