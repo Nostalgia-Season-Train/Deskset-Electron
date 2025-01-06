@@ -18,7 +18,9 @@ const refreshPage = () => {
 }
 
 const openDevTool = () => {
-  document.title += ' -debug'
+  if (!document.title.includes('-debug')) {
+    document.title += ' -debug'
+  }
 }
 </script>
 
@@ -40,6 +42,7 @@ const openDevTool = () => {
     <widgetManager
       @triggerDisplay="switchDisplay"
       @refreshPage="refreshPage"
+      @openDevTool="openDevTool"
     />
   </el-drawer>
   <div style="position: fixed; top: 5px; right: 5px;">

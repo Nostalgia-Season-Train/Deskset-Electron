@@ -23,7 +23,7 @@ const createWindow = () => {
   win.loadURL('http://localhost:5173')
 
   // 检查网页标题，如果有 -debug 则打开开发者工具
-  win.webContents.on('did-finish-load', () => {
+  win.webContents.on('page-title-updated', () => {
     const pageTitle = win.webContents.getTitle()
     if (pageTitle.includes('-debug')) {
       // 打开方式：分离模式，一个单独窗口，不影响透明效果

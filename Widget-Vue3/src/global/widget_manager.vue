@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Clock, ChatDotSquare, Monitor, Notebook, Refresh } from "@element-plus/icons-vue"
+import { Clock, ChatDotSquare, Monitor, Notebook, Refresh, Grid } from "@element-plus/icons-vue"
 
 import widgets from "./widget_register"
 
@@ -38,10 +38,16 @@ for (const widget of widgets) {
         />
       </el-menu-item>
     </el-sub-menu>
-    <el-menu-item>
+    <el-menu-item index="refreshPage">
       <span>刷新</span>
       <el-button type="primary" circle @click="$emit('refreshPage')">
         <el-icon style="margin: 0;"><Refresh /></el-icon>
+      </el-button>
+    </el-menu-item>
+    <el-menu-item index="openDevTool">
+      <span>开发者工具</span>
+      <el-button type="primary" circle @click="$emit('openDevTool')">
+        <el-icon style="margin: 0;"><Grid /></el-icon>
       </el-button>
     </el-menu-item>
   </el-menu>
