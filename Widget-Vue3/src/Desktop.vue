@@ -12,6 +12,14 @@ function switchDisplay(strID, isDisplay) {
     if (widget.strID == strID)
       widget.isDisplay.value = isDisplay
 }
+
+const refreshPage = () => {
+  location.reload()
+}
+
+const openDevTool = () => {
+  document.title += ' -debug'
+}
 </script>
 
 
@@ -25,14 +33,16 @@ function switchDisplay(strID, isDisplay) {
   </div>
 
   <!-- 组件导航：控制组件显示 -->
-  <!-- size="25vw" 方便开着控制台调试，实际部署 16vw -->
   <el-drawer v-model="isOpenNav" direction="ltr" :with-header="false"
-    size="25vw"
+    size="16vw"
     style="--el-drawer-padding-primary: 0;"
     >
-    <widgetManager @triggerDisplay="switchDisplay"/>
+    <widgetManager
+      @triggerDisplay="switchDisplay"
+      @refreshPage="refreshPage"
+    />
   </el-drawer>
-  <div style="position: fixed; top: 5px; right: 5px;" v-widget-drag>
+  <div style="position: fixed; top: 5px; right: 5px;">
     <el-button type="primary" @click="isOpenNav = true">
       <el-icon :size="30"><Operation /></el-icon>
     </el-button>
@@ -52,8 +62,7 @@ function switchDisplay(strID, isDisplay) {
 body {
   width: 100vw; height: 100vh;
 
-  background: url("./调试背景.jpg") no-repeat center center / cover fixed;
-  /* background-color: transparent; */
+  background-color: transparent;
 
   display: flex; flex-direction: row;
 }

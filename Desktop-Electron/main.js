@@ -22,8 +22,14 @@ const createWindow = () => {
   })
   win.loadURL('http://localhost:5173')
 
-  // 调试：DevTools 单独窗体，不影响透明效果
-  // win.webContents.openDevTools({ mode: 'detach' })
+  // 检查网页标题，如果有 -debug 则打开开发者工具
+  win.webContents.on('did-finish-load', () => {
+    const pageTitle = win.webContents.getTitle()
+    if (pageTitle.includes('-debug')) {
+      // 打开方式：分离模式，一个单独窗口，不影响透明效果
+      win.webContents.openDevTools({ mode: 'detach' })
+    }
+  })
 
   // 窗口置底
   const handleBuffer = win.getNativeWindowHandle()

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Clock, ChatDotSquare, Monitor, Notebook } from "@element-plus/icons-vue"
+import { Clock, ChatDotSquare, Monitor, Notebook, Refresh } from "@element-plus/icons-vue"
 
 import widgets from "./widget_register"
 
@@ -38,6 +38,12 @@ for (const widget of widgets) {
         />
       </el-menu-item>
     </el-sub-menu>
+    <el-menu-item>
+      <span>刷新</span>
+      <el-button type="primary" circle @click="$emit('refreshPage')">
+        <el-icon style="margin: 0;"><Refresh /></el-icon>
+      </el-button>
+    </el-menu-item>
   </el-menu>
 </el-scrollbar>
 </template>
