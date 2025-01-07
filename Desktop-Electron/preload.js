@@ -8,3 +8,18 @@ window.addEventListener('DOMContentLoaded', () => {
       replaceText(`${dependency}-version`, process.versions[dependency])
   }
 })
+
+
+// 拖拽文件路径
+const { contextBridge, webUtils } = require('electron')
+const { ipcRenderer } = require('electron')
+
+contextBridge.exposeInMainWorld('electron', {
+  showFilePath: (file) => {
+    const path = webUtils.getPathForFile(file)
+    console.log(`拖拽文件路径：${path}`)
+  },
+  openDevTool: () => {
+    ipcRenderer.send('openDevTool')
+  }
+})

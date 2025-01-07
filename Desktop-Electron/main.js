@@ -1,4 +1,5 @@
 const { app, BrowserWindow, screen } = require('electron')
+const { ipcMain } = require('electron')
 const path = require('path')
 
 const { DataType, open, close, define } = require('ffi-rs')
@@ -22,13 +23,9 @@ const createWindow = () => {
   })
   win.loadURL('http://localhost:5173')
 
-  // 检查网页标题，如果有 -debug 则打开开发者工具
-  win.webContents.on('page-title-updated', () => {
-    const pageTitle = win.webContents.getTitle()
-    if (pageTitle.includes('-debug')) {
-      // 打开方式：分离模式，一个单独窗口，不影响透明效果
-      win.webContents.openDevTools({ mode: 'detach' })
-    }
+  // 打开开发者工具
+  ipcMain.on('openDevTool', () => {
+    win.webContents.openDevTools({ mode: 'detach' })
   })
 
   // 窗口置底

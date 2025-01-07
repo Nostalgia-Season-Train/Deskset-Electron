@@ -18,9 +18,7 @@ const refreshPage = () => {
 }
 
 const openDevTool = () => {
-  if (!document.title.includes('-debug')) {
-    document.title += ' -debug'
-  }
+  electron.openDevTool()
 }
 </script>
 
