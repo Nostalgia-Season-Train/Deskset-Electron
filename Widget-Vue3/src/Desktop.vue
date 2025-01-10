@@ -20,6 +20,27 @@ const refreshPage = () => {
 const openDevTool = () => {
   electron.openDevTool()
 }
+
+
+// 桌面管理：跨页面通信，管理页 /manager.html
+const bc = new BroadcastChannel("Desktop")
+
+bc.onmessage = (event) => {
+  if (event.data?.action == "refreshPage") {
+    refreshPage()
+  }
+  if (event.data?.action == "openDevTool") {
+    openDevTool()
+  }
+
+  if (event.data?.action == "switchDisplay") {
+    const strID = event.data?.strID
+    const isDisplay = event.data?.isDisplay
+    if (strID && isDisplay) {
+      switchDisplay(strID, isDisplay)
+    }
+  }
+}
 </script>
 
 
@@ -33,7 +54,7 @@ const openDevTool = () => {
   </div>
 
   <!-- 组件导航：控制组件显示 -->
-  <el-drawer v-model="isOpenNav" direction="ltr" :with-header="false"
+  <!-- <el-drawer v-model="isOpenNav" direction="ltr" :with-header="false"
     size="16vw"
     style="--el-drawer-padding-primary: 0;"
     >
@@ -47,7 +68,7 @@ const openDevTool = () => {
     <el-button type="primary" @click="isOpenNav = true">
       <el-icon :size="30"><Operation /></el-icon>
     </el-button>
-  </div>
+  </div> -->
 </body>
 </template>
 

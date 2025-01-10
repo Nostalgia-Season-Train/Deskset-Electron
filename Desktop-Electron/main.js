@@ -21,7 +21,7 @@ const createWindow = () => {
     // 不能聚焦，不在任务栏显示
     focusable: false
   })
-  win.loadURL('http://localhost:5173')
+  win.loadURL('http://localhost:5173/index.html')
 
   // 打开开发者工具
   ipcMain.on('openDevTool', () => {
@@ -64,6 +64,19 @@ const createWindow = () => {
   }
 }
 
+const createManager = () => {
+  const win = new BrowserWindow({
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    },
+    width: 800,
+    height: 600
+  })
+  win.loadURL('http://localhost:5173/manager.html')
+
+  win.removeMenu()  // macOS 上不生效
+}
+
 app.whenReady().then(() => {
   open({
     library: 'setBottom.dll',
@@ -71,6 +84,7 @@ app.whenReady().then(() => {
   })
 
   createWindow()
+  createManager()
 })
 
 app.on('window-all-closed', () => {

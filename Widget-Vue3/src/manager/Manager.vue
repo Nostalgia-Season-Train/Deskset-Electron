@@ -49,4 +49,8 @@ const developPage   = () => { router.push({ path: "/develop"   }) }
   margin: 0; padding: 0;
   user-select: none;
 }
+
+main {
+  width: 100%; height: 100%;
+}
 </style>
