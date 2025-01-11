@@ -26,7 +26,7 @@ useIntervalFn(date, 60000)
 
 
 <template>
-  <div class="date" v-widget-drag>
+  <div class="date">
     <span class="year-month-day">{{ year }} 年 {{ month }} 月 {{ day }} 日</span>
     <span class="split"> - </span>
     <span class="week">{{ week }}</span>

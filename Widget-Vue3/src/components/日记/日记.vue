@@ -81,7 +81,7 @@ const onfocus = () => {  // 单击输入框打开日历时，也得刷新日历
 
 
 <template>
-<div class="diary" v-widget-drag>
+<div class="diary">
   <el-button @dblclick="obsidian">双击在 Obsidian 中打开</el-button>
   <div class="select">
     <el-button @click="subOneDay">

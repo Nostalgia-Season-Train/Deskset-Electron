@@ -18,7 +18,7 @@ useIntervalFn(greet, 60000)
 
 
 <template>
-  <div class="greet" v-widget-drag>
+  <div class="greet">
     <span class="greeting">{{ greeting }}</span>
   </div>
 </template>

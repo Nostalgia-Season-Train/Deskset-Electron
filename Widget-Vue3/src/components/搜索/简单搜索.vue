@@ -11,7 +11,7 @@ const refresh = () => {
 
 
 <template>
-  <div class="search" v-widget-drag>
+  <div class="search">
     <el-input v-model="input" :prefix-icon="Search" placeholder="搜索"
       style="width: 320px; height: 45px;"
       @input="refresh"

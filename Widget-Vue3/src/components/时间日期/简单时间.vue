@@ -22,7 +22,7 @@ useIntervalFn(time, 1000)
 
 
 <template>
-  <div class="time" v-widget-drag>
+  <div class="time">
     <span class="hour-minute">{{ hour }}:{{ minute }}</span>
     <span class="ampm">{{ ampm }}</span>
   </div>

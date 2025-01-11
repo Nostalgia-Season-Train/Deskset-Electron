@@ -62,7 +62,7 @@ useIntervalFn(device, 1000)
 
 <template>
   <div class="device">
-    <div class="cpu" v-widget-drag>
+    <div class="cpu">
       <!-- pointer-events: none 不需要与图表交互 -->
       <div style="width: 250px; height: 70px; pointer-events: none;">
         <v-chart :option="optionCPU" />
@@ -71,7 +71,7 @@ useIntervalFn(device, 1000)
       <span class="split">&nbsp;</span>
       <span class="cpu-num">{{ cpu_percent }}%</span>
     </div>
-    <div class="memory" v-widget-drag>
+    <div class="memory">
       <div style="width: 250px; height: 70px; pointer-events: none;">
         <v-chart :option="optionRAM" />
       </div>
