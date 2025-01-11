@@ -62,6 +62,33 @@ const createWindow = () => {
 
     win.setIgnoreMouseEvents(!buffer[3])
   }
+
+  // 保存桌面组件截图
+  ipcMain.on('saveTheme', async(event, theme) => {
+    const fs = require('fs').promises
+
+    const nativeImage = await win.webContents.capturePage({
+      x: 0,
+      y: 0,
+      width: screen.getPrimaryDisplay().workAreaSize.width,
+      height: screen.getPrimaryDisplay().workAreaSize.height
+    })
+    const bitmap = nativeImage.toPNG()
+
+    const folder = '../theme'
+    try {
+      await fs.access(folder)
+    } catch (error) {
+      await fs.mkdir(folder)
+    }
+
+    const name = String(theme?.name) || 'default'  // 这里是 stem 无后缀名
+    const widgetJSON = JSON.stringify(theme?.widget, null, 2)
+
+    const path = folder + '/' + name
+    fs.writeFile(path + '.png', bitmap)
+    fs.writeFile(path + '.json', widgetJSON, { encoding: 'utf-8' })
+  })
 }
 
 const createManager = () => {

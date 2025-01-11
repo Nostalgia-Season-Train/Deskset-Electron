@@ -40,4 +40,8 @@ const openDevTool = () => {
     <el-icon style="margin: 0;"><CopyDocument /></el-icon>
   </el-button>
 </p>
+
+<p>
+  <span>导出日志（前端和后端）</span>
+</p>
 </template>

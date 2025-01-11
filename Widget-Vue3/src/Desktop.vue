@@ -1,11 +1,6 @@
 <script setup>
-import { ref } from "vue"
-import { Operation } from "@element-plus/icons-vue"
-
-import widgetManager from "./global/widget_manager.vue"
+// 组件显示
 import widgets from "./global/widget_register"
-
-const isOpenNav = ref(false)
 
 function switchDisplay(strID, isDisplay) {
   for (const widget of widgets)
@@ -13,12 +8,41 @@ function switchDisplay(strID, isDisplay) {
       widget.isDisplay.value = isDisplay
 }
 
+// 桌面刷新，开发工具
 const refreshPage = () => {
   location.reload()
 }
-
 const openDevTool = () => {
   electron.openDevTool()
+}
+
+// 主题保存
+const saveTheme = () => {
+  let widgetStatus = []
+
+  for (const widget of widgets) {
+    if (widget.isDisplay.value != true) {
+      break
+    }
+
+    const widgetHTML = document.getElementById(widget.strID)
+    const widgetHTMLInfo = widgetHTML.getBoundingClientRect()
+
+    widgetStatus.push({
+      id: widget.strID,
+      pos: {
+        x: widgetHTMLInfo.x,
+        y: widgetHTMLInfo.y
+      }
+    })
+  }
+
+  const theme = {
+    name: 'Default',
+    widget: widgetStatus
+  }
+
+  electron.saveTheme(theme)
 }
 
 
@@ -36,9 +60,13 @@ bc.onmessage = (event) => {
   if (event.data?.action == "switchDisplay") {
     const strID = event.data?.strID
     const isDisplay = event.data?.isDisplay
-    if (strID && isDisplay) {
+    if (strID != undefined && isDisplay != undefined) {
       switchDisplay(strID, isDisplay)
     }
+  }
+
+  if (event.data?.action == "saveTheme") {
+    saveTheme()
   }
 }
 </script>
@@ -49,26 +77,9 @@ bc.onmessage = (event) => {
   <!-- 组件容器 -->
   <div class="container">
     <div v-for="widget in widgets">
-      <component :is="widget.content" v-if="widget.isDisplay.value"/>
+      <component :id="widget.strID" :is="widget.content" v-if="widget.isDisplay.value" v-widget-drag/>
     </div>
   </div>
-
-  <!-- 组件导航：控制组件显示 -->
-  <!-- <el-drawer v-model="isOpenNav" direction="ltr" :with-header="false"
-    size="16vw"
-    style="--el-drawer-padding-primary: 0;"
-    >
-    <widgetManager
-      @triggerDisplay="switchDisplay"
-      @refreshPage="refreshPage"
-      @openDevTool="openDevTool"
-    />
-  </el-drawer>
-  <div style="position: fixed; top: 5px; right: 5px;">
-    <el-button type="primary" @click="isOpenNav = true">
-      <el-icon :size="30"><Operation /></el-icon>
-    </el-button>
-  </div> -->
 </body>
 </template>
 

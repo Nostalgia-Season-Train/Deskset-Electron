@@ -29,8 +29,15 @@ const router = createRouter({
 })
 
 
+// 持久化
+import { createPinia } from 'pinia'
+
+const pinia = createPinia()
+
+
 // 应用
 const app = createApp(Manager)
   .use(router)
+  .use(pinia)
   .use(ElementPlus)
   .mount('#manager')

@@ -21,5 +21,8 @@ contextBridge.exposeInMainWorld('electron', {
   },
   openDevTool: () => {
     ipcRenderer.send('openDevTool')
+  },
+  saveTheme: (theme) => {
+    ipcRenderer.send('saveTheme', theme)
   }
 })
