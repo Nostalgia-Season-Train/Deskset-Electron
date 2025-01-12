@@ -1,10 +1,10 @@
 <script setup>
 // 组件显示
-import widgets from "./global/widget_register"
+import { widgets } from "./global/widget_register"
 
-function switchDisplay(strID, isDisplay) {
+function switchDisplay(id, isDisplay) {
   for (const widget of widgets)
-    if (widget.strID == strID)
+    if (widget.id == id)
       widget.isDisplay.value = isDisplay
 }
 
@@ -21,20 +21,16 @@ const saveTheme = () => {
   let widgetStatus = []
 
   for (const widget of widgets) {
-    if (widget.isDisplay.value != true) {
-      break
+    if (widget.isDisplay.value == true) {
+      const widgetHTML = document.getElementById(widget.id)
+      const widgetHTMLInfo = widgetHTML.getBoundingClientRect()
+
+      widgetStatus.push({
+        id: widget.id,
+        pos: { x: widgetHTMLInfo.x,
+               y: widgetHTMLInfo.y }
+      })
     }
-
-    const widgetHTML = document.getElementById(widget.strID)
-    const widgetHTMLInfo = widgetHTML.getBoundingClientRect()
-
-    widgetStatus.push({
-      id: widget.strID,
-      pos: {
-        x: widgetHTMLInfo.x,
-        y: widgetHTMLInfo.y
-      }
-    })
   }
 
   const theme = {
@@ -58,10 +54,10 @@ bc.onmessage = (event) => {
   }
 
   if (event.data?.action == "switchDisplay") {
-    const strID = event.data?.strID
+    const id = event.data?.id
     const isDisplay = event.data?.isDisplay
-    if (strID != undefined && isDisplay != undefined) {
-      switchDisplay(strID, isDisplay)
+    if (id != undefined && isDisplay != undefined) {
+      switchDisplay(id, isDisplay)
     }
   }
 
@@ -77,7 +73,7 @@ bc.onmessage = (event) => {
   <!-- 组件容器 -->
   <div class="container">
     <div v-for="widget in widgets">
-      <component :id="widget.strID" :is="widget.content" v-if="widget.isDisplay.value" v-widget-drag/>
+      <component :id="widget.id" :is="widget.content" v-if="widget.isDisplay.value" v-widget-drag/>
     </div>
   </div>
 </body>

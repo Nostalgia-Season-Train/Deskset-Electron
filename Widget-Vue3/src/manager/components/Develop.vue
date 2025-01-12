@@ -20,28 +20,28 @@ const openDevTool = () => {
 
 
 <template>
-<p>
+<div>
   <span>刷新管理页面</span>
   <el-button type="primary" circle @click="refreshManagerPage">
     <el-icon style="margin: 0;"><Refresh /></el-icon>
   </el-button>
-</p>
+</div>
 
-<p>
+<div>
   <span>刷新</span>
   <el-button type="primary" circle @click="refreshPage">
     <el-icon style="margin: 0;"><Refresh /></el-icon>
   </el-button>
-</p>
+</div>
 
-<p>
+<div>
   <span>开发工具</span>
   <el-button type="primary" circle @click="openDevTool">
     <el-icon style="margin: 0;"><CopyDocument /></el-icon>
   </el-button>
-</p>
+</div>
 
-<p>
+<div>
   <span>导出日志（前端和后端）</span>
-</p>
+</div>
 </template>
