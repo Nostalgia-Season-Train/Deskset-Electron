@@ -8,15 +8,24 @@ const isOpenNav = ref(false)
 import { useRouter } from "vue-router"
 const router = useRouter()
 
-const widgetPage    = () => { router.push({ path: "/widget"    }) }
-const wallpaperPage = () => { router.push({ path: "/wallpaper" }) }
-const themePage     = () => { router.push({ path: "/theme"     }) }
-const developPage   = () => { router.push({ path: "/develop"   }) }
+const widgetPage = (category) => {
+  if (category != '') {
+    router.push({ path: `/widget/${category}` })
+  } else {
+    router.push({ path: '/widget-all' })
+  }
+}
+
+const themePage   = () => { router.push({ path: "/theme"   }) }
+const developPage = () => { router.push({ path: "/develop" }) }
 </script>
 
 
 <template>
 <body>
+  <main>
+    <RouterView />
+  </main>
   <nav>
     <el-drawer v-model="isOpenNav" direction="ltr" :with-header="false"
       size="25vw"
@@ -24,7 +33,6 @@ const developPage   = () => { router.push({ path: "/develop"   }) }
     >
       <Navigate
         @widgetPage="widgetPage"
-        @wallpaperPage="wallpaperPage"
         @themePage="themePage"
         @developPage="developPage"
       />
@@ -37,9 +45,6 @@ const developPage   = () => { router.push({ path: "/develop"   }) }
       </el-button>
     </div>
   </nav>
-  <main>
-    <RouterView />
-  </main>
 </body>
 </template>
 

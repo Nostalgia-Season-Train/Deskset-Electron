@@ -1,5 +1,7 @@
 <script setup>
 import { Menu } from "@element-plus/icons-vue"
+
+import { categorys } from "../global/widget_register"
 </script>
 
 
@@ -7,12 +9,19 @@ import { Menu } from "@element-plus/icons-vue"
   <el-menu
     style="height: 100vh"
   >
-    <el-menu-item index="widget" @click="$emit('widgetPage')">
-      <span>组件</span>
-    </el-menu-item>
-    <el-menu-item index="wallpaper" @click="$emit('wallpaperPage')">
-      <span>壁纸</span>
-    </el-menu-item>
+    <el-sub-menu index="widget">
+      <template #title><span>组件</span></template>
+      <el-menu-item index="widget/all" @click="$emit('widgetPage', '')">
+        <span>全部组件</span>
+      </el-menu-item>
+      <el-menu-item
+        v-for="category in categorys"
+        :index="'category/' + category"
+        @click="$emit('widgetPage', category)"
+      >
+        <span>{{ category }}</span>
+      </el-menu-item>
+    </el-sub-menu>
     <el-menu-item index="theme" @click="$emit('themePage')">
       <span>主题</span>
     </el-menu-item>
