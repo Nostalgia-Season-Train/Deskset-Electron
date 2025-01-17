@@ -4,13 +4,11 @@ import axios from "axios"
 
 const hour   = ref("00")
 const minute = ref("00")
-const ampm   = ref("am")
 
 const time = async () => {
-  const response = await axios.get("http://127.0.0.1:8000/v0/datetime/time12")
+  const response = await axios.get("http://127.0.0.1:8000/v0/datetime/time")
   hour.value = response.data.data.hour
   minute.value = response.data.data.minute
-  ampm.value = response.data.data.ampm
 }
 time()
 
@@ -24,7 +22,6 @@ useIntervalFn(time, 1000)
 <template>
   <div class="time">
     <span class="hour-minute">{{ hour }}:{{ minute }}</span>
-    <span class="ampm">{{ ampm }}</span>
   </div>
 </template>
 
@@ -35,10 +32,6 @@ useIntervalFn(time, 1000)
 }
 
 .time>.hour-minute {
-  font-size: 60px;
-}
-
-.time>.ampm {
-  font-size: 48px;
+  font-size: 80px;
 }
 </style>

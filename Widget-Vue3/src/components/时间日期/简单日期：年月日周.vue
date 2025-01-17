@@ -40,11 +40,11 @@ useIntervalFn(date, 60000)
 }
 
 .year-month-day {
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .split, .week {
-  font-size: 16px;
+  font-size: 18px;
   color: rgba(255, 255, 255, 0.7);
 }
 </style>
