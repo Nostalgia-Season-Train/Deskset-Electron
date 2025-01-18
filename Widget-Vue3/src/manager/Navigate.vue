@@ -6,9 +6,8 @@ import { categorys } from "../global/widget_register"
 
 
 <template>
-  <el-menu
-    style="height: 100vh"
-  >
+<el-scrollbar height="100vh">
+  <el-menu style="height: 100vh">
     <el-sub-menu index="widget">
       <template #title><span>组件</span></template>
       <el-menu-item index="widget/all" @click="$emit('widgetPage', '')">
@@ -32,6 +31,7 @@ import { categorys } from "../global/widget_register"
       <span>开发</span>
     </el-menu-item>
   </el-menu>
+</el-scrollbar>
 </template>
 
 

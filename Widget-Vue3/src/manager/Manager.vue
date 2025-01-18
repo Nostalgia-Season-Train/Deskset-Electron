@@ -23,28 +23,16 @@ const developPage = () => { router.push({ path: "/develop" }) }
 
 <template>
 <body>
+  <nav>
+    <Navigate
+      @widgetPage="widgetPage"
+      @themePage="themePage"
+      @developPage="developPage"
+    />
+  </nav>
   <main>
     <RouterView />
   </main>
-  <nav>
-    <el-drawer v-model="isOpenNav" direction="ltr" :with-header="false"
-      size="25vw"
-      style="--el-drawer-padding-primary: 0;"
-    >
-      <Navigate
-        @widgetPage="widgetPage"
-        @themePage="themePage"
-        @developPage="developPage"
-      />
-    </el-drawer>
-    <div style="position: fixed; top: 5px; right: 5px;">
-      <el-button type="primary" @click="isOpenNav = true"
-        style="padding: 0;"
-      >
-        <el-icon :size="30"><Operation /></el-icon>
-      </el-button>
-    </div>
-  </nav>
 </body>
 </template>
 
@@ -55,7 +43,14 @@ const developPage = () => { router.push({ path: "/develop" }) }
   user-select: none;
 }
 
+body {
+  display: flex;
+}
+
+nav {
+  width: 25%; height: 100%;
+}
 main {
-  width: 100%; height: 100%;
+  width: 75%; height: 100%;
 }
 </style>
