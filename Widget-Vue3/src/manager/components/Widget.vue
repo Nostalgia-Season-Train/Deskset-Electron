@@ -1,19 +1,25 @@
 <script setup>
 // 组件预览：计算 id，找到相关组件并预览
 import { shallowRef } from "vue"
-import { widgets, categorys } from "../../global/widget_register"
+import { widgets, categorys, number } from "../../global/widget_register"
 
-const widgetNow = shallowRef()
+const widgetNow = shallowRef(widgets[0])
 
 const handleSelect = (key, keyPath) => {
   const id = keyPath[0] + key
 
   for (const widget of widgets) {
     if (widget.id == id) {
-      widgetNow.value = widget.content
+      widgetNow.value = widget
     }
   }
 }
+
+
+// 组件开关
+import { widgetStore } from "../store/widget"
+
+const value按钮 = widgetStore().isDisplay
 
 
 // 桌面管理
@@ -32,9 +38,13 @@ const triggerDisplay = (id, isDisplay) => {
 <template>
 <el-container>
 
-  <el-aside width="25%">
+  <el-aside width="30%">
     <el-scrollbar>
-      <el-menu @select="handleSelect">
+      <el-menu
+        :default-active="widgets[0].name"
+        :default-openeds="[String(categorys.keys().next().value + '/')]"
+        @select="handleSelect"
+      >
         <el-sub-menu v-for="category in [...categorys.keys()]" :index="category + '/'">
           <template #title>
             <span>{{ category }}</span>
@@ -48,7 +58,19 @@ const triggerDisplay = (id, isDisplay) => {
   </el-aside>
 
   <el-main>
-    <component :is="widgetNow"/>
+    <el-scrollbar>
+      <div class="preview">
+        <component :is="widgetNow.content"/>
+      </div>
+      <!-- 避免 v-model 触发 el-switch 切换动画，仅由鼠标触发动画 -->
+      <div v-for="n in number">
+        <el-switch
+          v-if="widgetNow.num == n - 1"
+          v-model="value按钮[widgetNow.num]"
+          @click="triggerDisplay(widgetNow.id, value按钮[widgetNow.num])"
+        />
+      </div>
+    </el-scrollbar>
   </el-main>
 
 </el-container>
@@ -61,7 +83,23 @@ const triggerDisplay = (id, isDisplay) => {
   height: 100%;
 }
 
-:deep(.el-aside .el-scrollbar__thumb) {
+/* 去掉侧边栏滚动条和分界线 */
+:deep(.el-scrollbar__thumb) {
   display: none;
+}
+.el-menu {
+  border: 0;
+}
+
+.el-main {
+  padding: 10px;
+}
+.preview {
+  padding: 5px;
+  pointer-events: none;
+  background-color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
