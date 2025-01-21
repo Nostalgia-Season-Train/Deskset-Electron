@@ -20,8 +20,8 @@ const openThemeConfig = () => {
 
 
 <template>
-<div>
-<el-scrollbar height="100vh">
+<el-scrollbar>
+
   <div class="theme-save">
     <el-card shadow="hover" @click="saveTheme">
       <div class="content">
@@ -30,6 +30,7 @@ const openThemeConfig = () => {
       </div>
     </el-card>
   </div>
+
   <div class="theme-container" v-for="n in 100">
     <div class="left">
       <el-card shadow="never"></el-card>
@@ -54,8 +55,8 @@ const openThemeConfig = () => {
       </div>
     </div>
   </div>
+
 </el-scrollbar>
-</div>
 </template>
 
 
@@ -99,7 +100,7 @@ const openThemeConfig = () => {
 }
 
 .theme-container>.right>.word>.name {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .theme-container>.right>.word>.save-time {

@@ -1,44 +1,54 @@
 <script setup>
-import { Menu } from "@element-plus/icons-vue"
+const emit = defineEmits([
+  "welcomePage",
+  "widgetPage",
+  "themePage",
+  "developPage"
+])
 
-import { categorys } from "../global/widget_register"
+const handleSelect = (index) => {
+  if (index == "welcome") {
+    emit("welcomePage")
+  } else if (index == "widget") {
+    emit("widgetPage")
+  } else if (index == "theme") {
+    emit("themePage")
+  } else if (index == "develop") {
+    emit("developPage")
+  }
+}
 </script>
 
 
 <template>
-<el-scrollbar height="100vh">
-  <el-menu style="height: 100vh">
-    <el-sub-menu index="widget">
-      <template #title><span>组件</span></template>
-      <el-menu-item index="widget/all" @click="$emit('widgetPage', '')">
-        <span>全部组件</span>
-      </el-menu-item>
-      <el-menu-item
-        v-for="category in categorys"
-        :index="'category/' + category"
-        @click="$emit('widgetPage', category)"
-      >
-        <span>{{ category }}</span>
-      </el-menu-item>
-    </el-sub-menu>
-    <el-menu-item index="theme" @click="$emit('themePage')">
-      <span>主题</span>
-    </el-menu-item>
-    <el-menu-item index="develop" @click="$emit('developPage')"
-      style="position: absolute; bottom: 0; width: 100%;"
-    >
-    <el-icon><Menu /></el-icon>
-      <span>开发</span>
-    </el-menu-item>
-  </el-menu>
-</el-scrollbar>
+<el-menu
+  default-active="welcome"
+  mode="horizontal"
+  @select="handleSelect"
+  :ellipsis="false"
+>
+  <el-menu-item index="welcome">
+    <span>欢迎</span>
+  </el-menu-item>
+  <el-menu-item index="widget">
+    <span>组件</span>
+  </el-menu-item>
+  <el-menu-item index="theme">
+    <span>主题</span>
+  </el-menu-item>
+  <el-menu-item index="develop">
+    <span>开发</span>
+  </el-menu-item>
+</el-menu>
 </template>
 
 
 <style>
-.el-menu-item {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+.el-menu {
+  height: 100%;
+}
+
+.el-menu--horizontal > .el-menu-item:nth-child(1) {
+  margin-right: auto;
 }
 </style>

@@ -1,43 +1,19 @@
 <script setup>
-// 组件开关
-import { widgetStore } from "../store/widget"
+// 组件预览：计算 id，找到相关组件并预览
+import { shallowRef } from "vue"
+import { widgets, categorys } from "../../global/widget_register"
 
-const value按钮 = widgetStore().isDisplay
+const widgetNow = shallowRef()
 
+const handleSelect = (key, keyPath) => {
+  const id = keyPath[0] + key
 
-// 刷新
-import { ref, shallowRef } from "vue"
-import { widgets } from "../../global/widget_register"
-
-const categoryNow = ref('')
-const widgetNow = shallowRef([])
-
-const refresh = (category) => {
-  categoryNow.value = category
-
-  widgetNow.value = []
   for (const widget of widgets) {
-    if (widget.category == category) {  
-      widgetNow.value.push(widget)
+    if (widget.id == id) {
+      widgetNow.value = widget.content
     }
   }
 }
-
-
-// 按照路由参数显示
-import { watch } from "vue"
-import { useRoute } from "vue-router"
-
-const route = useRoute()
-
-refresh(route.params.category)  // 进入页面刷新
-
-watch(                          // 路由更改刷新
-  () => route.params.category,
-  async (category) => {
-    refresh(category)
-  }
-)
 
 
 // 桌面管理
@@ -54,57 +30,38 @@ const triggerDisplay = (id, isDisplay) => {
 
 
 <template>
-<div>
-  <el-scrollbar height="100vh">
-    <div class="category-title">
-      <div>{{ categoryNow }}</div>
-    </div>
-    <div class="category-content">
-      <div class="widget" v-for="widget in widgetNow" :index="widget.id">
-        <div class="widget-preview">
-          <component :is="widget.content"/>
-        </div>
-        <div>{{ widget.name }}</div>
-        <el-switch
-          v-model="value按钮[widget.numID]"
-          @change="triggerDisplay(widget.id, value按钮[widget.numID])"
-        />
-      </div>
-    </div>
-  </el-scrollbar>
-</div>
+<el-container>
+
+  <el-aside width="25%">
+    <el-scrollbar>
+      <el-menu @select="handleSelect">
+        <el-sub-menu v-for="category in [...categorys.keys()]" :index="category + '/'">
+          <template #title>
+            <span>{{ category }}</span>
+          </template>
+          <el-menu-item v-for="widget in categorys.get(category)" :index="widget">
+            <span>{{ widget }}</span><!-- widget 是 categorys 中的组件名 -->
+          </el-menu-item>
+        </el-sub-menu>
+      </el-menu>
+    </el-scrollbar>
+  </el-aside>
+
+  <el-main>
+    <component :is="widgetNow"/>
+  </el-main>
+
+</el-container>
 </template>
 
 
 <style scoped>
-.category-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 5px;
-
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
-.widget {
-  box-shadow: 0 0 0 1px #ccc inset;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.widget-preview {
+.el-container {
   width: 100%;
   height: 100%;
-  padding: 1px;
-  background-color: gray;
+}
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  pointer-events: none;
+:deep(.el-aside .el-scrollbar__thumb) {
+  display: none;
 }
 </style>

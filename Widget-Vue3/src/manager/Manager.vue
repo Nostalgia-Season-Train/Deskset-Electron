@@ -1,22 +1,15 @@
 <script setup>
-import { ref } from "vue"
-import { Operation } from "@element-plus/icons-vue"
-
+/* 顶部导航 */
 import Navigate from "./Navigate.vue"
-const isOpenNav = ref(false)
 
+
+/* 路由 */
 import { useRouter } from "vue-router"
+
 const router = useRouter()
 
-const widgetPage = (category) => {
-  if (category != '') {
-    router.push({ path: `/widget/${category}` })
-  } else {
-    router.push({ path: '/widget-all' })
-  }
-}
-
 const themePage   = () => { router.push({ path: "/theme"   }) }
+const widgetPage  = () => { router.push({ path: "/widget"  }) }
 const developPage = () => { router.push({ path: "/develop" }) }
 </script>
 
@@ -43,14 +36,10 @@ const developPage = () => { router.push({ path: "/develop" }) }
   user-select: none;
 }
 
-body {
-  display: flex;
-}
-
 nav {
-  width: 25%; height: 100%;
+  height: 10vh;
 }
 main {
-  width: 75%; height: 100%;
+  height: 90vh;
 }
 </style>
