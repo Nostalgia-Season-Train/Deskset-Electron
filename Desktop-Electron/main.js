@@ -4,7 +4,9 @@ const path = require('path')
 
 const { DataType, open, close, define } = require('ffi-rs')
 
-const createWindow = () => {
+
+// === Desktop 窗口 ===
+const createDesktop = () => {
   const win = new BrowserWindow({
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
@@ -21,7 +23,8 @@ const createWindow = () => {
     // 不能聚焦，不在任务栏显示
     focusable: false
   })
-  win.loadURL('http://localhost:5173/index.html')
+  win.loadFile('../dist/index.html')
+  // win.loadURL('http://localhost:5173/index.html')
 
   // 打开开发者工具
   ipcMain.on('openDevTool', () => {
@@ -89,8 +92,15 @@ const createWindow = () => {
     fs.writeFile(path + '.png', bitmap)
     fs.writeFile(path + '.json', widgetJSON, { encoding: 'utf-8' })
   })
+
+  // 关闭窗口时，清除透明度检查
+  win.on('close', () => {
+    clearInterval(checkTransInterval)
+  })
 }
 
+
+// === Manager 窗口 ===
 const createManager = () => {
   const win = new BrowserWindow({
     webPreferences: {
@@ -99,25 +109,39 @@ const createManager = () => {
     width: 800,
     height: 600
   })
-  win.loadURL('http://localhost:5173/manager.html')
+  win.loadFile('../dist/manager.html')
+  // win.loadURL('http://localhost:5173/manager.html')
 
   win.removeMenu()  // macOS 上不生效
+
+  // 管理窗口关闭，退出应用
+  win.on('close', () => {
+    appClose()
+  })
 }
 
-app.whenReady().then(() => {
+
+// === 应用 App 打开关闭 ===
+const appOpen = () => {
   open({
     library: 'setBottom.dll',
     path: './module_C/setBottom.dll'
   })
 
-  createWindow()
+  createDesktop()
   createManager()
+}
+
+const appClose = () => {
+  close('setBottom.dll')
+
+  app.quit()
+}
+
+app.whenReady().then(() => {
+  appOpen()
 })
 
 app.on('window-all-closed', () => {
-  if(process.platform !== 'darwin') {
-    close('setBottom.dll')
-
-    app.quit()
-  }
+  appClose()
 })
