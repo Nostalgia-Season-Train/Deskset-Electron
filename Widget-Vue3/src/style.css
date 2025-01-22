@@ -8,3 +8,7 @@ html, body, #desktop {
   border: 0;
   padding: 0;
 }
+
+* {
+  font-family: 'DefaultFont';
+}
