@@ -1,13 +1,15 @@
+// 导入组件
+const components = import.meta.glob("../components/*/*.vue")
+
+
+// 遍历组件
 import { ref } from "vue"
-
-const components = import.meta.glob("../components/*/*.vue", { eager: true })
-
 
 let categoryList = new Map()
 let widgetList = []
 let num = 0
 
-for (const [path, value] of Object.entries(components)) {
+for (const path in components) {
   const path_parts = path.replace(".vue", "").split("/").slice(2)
 
   const id = path_parts.join("/")  // 组件 ID = 类型/名称 - 文件夹/文件名
@@ -24,13 +26,15 @@ for (const [path, value] of Object.entries(components)) {
     id:       id,
     category: category,
     name:     name,
-    content: value.default,
+    content: components[path],
     isDisplay: ref(false)
   })
 
   num++
 }
 
+
+// 导出组件
 export const categorys = categoryList
 export const widgets = widgetList
 export const number = num

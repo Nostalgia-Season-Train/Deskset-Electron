@@ -9,6 +9,7 @@ export default defineConfig({
   base: './',
   build: {
     outDir: path.resolve(__dirname, '../dist'),
+    emptyOutDir: true,
     rollupOptions: {
       // 多页应用打包可能有些问题
       input: {

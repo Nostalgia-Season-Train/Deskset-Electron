@@ -1,5 +1,6 @@
 <script setup>
 // 组件显示
+import { defineAsyncComponent } from "vue"
 import { widgets } from "./global/widget_register"
 
 function switchDisplay(id, isDisplay) {
@@ -73,7 +74,12 @@ bc.onmessage = (event) => {
   <!-- 组件容器 -->
   <div class="container">
     <div v-for="widget in widgets">
-      <component :id="widget.id" :is="widget.content" v-if="widget.isDisplay.value" v-widget-drag/>
+      <component
+        :id="widget.id"
+        :is="defineAsyncComponent(widget.content)"
+        v-if="widget.isDisplay.value"
+        v-widget-drag
+      />
     </div>
   </div>
 </body>

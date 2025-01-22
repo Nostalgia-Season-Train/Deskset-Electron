@@ -1,6 +1,6 @@
 <script setup>
 // 组件预览：计算 id，找到相关组件并预览
-import { shallowRef } from "vue"
+import { shallowRef, defineAsyncComponent } from "vue"
 import { widgets, categorys, number } from "../../global/widget_register"
 
 const widgetNow = shallowRef(widgets[0])
@@ -60,7 +60,7 @@ const triggerDisplay = (id, isDisplay) => {
   <el-main>
     <el-scrollbar>
       <div class="preview">
-        <component :is="widgetNow.content"/>
+        <component :is="defineAsyncComponent(widgetNow.content)"/>
       </div>
       <!-- 避免 v-model 触发 el-switch 切换动画，仅由鼠标触发动画 -->
       <div v-for="n in number">
