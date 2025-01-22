@@ -6,8 +6,3 @@ html, body, #manager {
   border: 0;
   padding: 0;
 }
-
-* {
-  --el-font-family: 'SourceHanSansSC';
-  font-family: 'SourceHanSansSC';
-}
