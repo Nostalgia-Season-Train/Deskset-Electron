@@ -4,6 +4,7 @@ import { shallowRef, defineAsyncComponent } from "vue"
 import { widgets, categorys, number } from "../../global/widget_register"
 
 const widgetNow = shallowRef(widgets[0])
+const widgetPreview = shallowRef(defineAsyncComponent(widgets[0].content))
 
 const handleSelect = (key, keyPath) => {
   const id = keyPath[0] + key
@@ -11,6 +12,7 @@ const handleSelect = (key, keyPath) => {
   for (const widget of widgets) {
     if (widget.id == id) {
       widgetNow.value = widget
+      widgetPreview.value = defineAsyncComponent(widget.content)
     }
   }
 }
@@ -60,7 +62,9 @@ const triggerDisplay = (id, isDisplay) => {
   <el-main>
     <el-scrollbar>
       <div class="preview">
-        <component :is="defineAsyncComponent(widgetNow.content)"/>
+        <Suspense>
+          <component :is="widgetPreview"/>
+        </Suspense>
       </div>
       <!-- 避免 v-model 触发 el-switch 切换动画，仅由鼠标触发动画 -->
       <div v-for="n in number">

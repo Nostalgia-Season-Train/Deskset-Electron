@@ -74,12 +74,14 @@ bc.onmessage = (event) => {
   <!-- 组件容器 -->
   <div class="container">
     <div v-for="widget in widgets">
-      <component
-        :id="widget.id"
-        :is="defineAsyncComponent(widget.content)"
-        v-if="widget.isDisplay.value"
-        v-widget-drag
-      />
+      <Suspense>
+        <component
+          :id="widget.id"
+          :is="defineAsyncComponent(widget.content)"
+          v-if="widget.isDisplay.value"
+          v-widget-drag
+        />
+      </Suspense>
     </div>
   </div>
 </body>
