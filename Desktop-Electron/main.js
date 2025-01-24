@@ -67,7 +67,7 @@ const createDesktop = () => {
   }
 
   // 保存桌面组件截图
-  ipcMain.on('saveTheme', async(event, theme) => {
+  ipcMain.on('saveTheme', async (event, theme) => {
     const fs = require('fs').promises
 
     const nativeImage = await win.webContents.capturePage({
@@ -93,6 +93,12 @@ const createDesktop = () => {
     fs.writeFile(path + '.json', widgetJSON, { encoding: 'utf-8' })
   })
 
+  // 打开外部浏览器
+  ipcMain.on('openBrowser', async (event, url) => {
+    const { shell } = require('electron')
+    shell.openExternal(url)
+  })
+
   // 关闭窗口时，清除透明度检查
   win.on('close', () => {
     clearInterval(checkTransInterval)
@@ -107,7 +113,10 @@ const createManager = () => {
       preload: path.join(__dirname, 'preload.js')
     },
     width: 800,
-    height: 600
+    height: 600,
+
+    // 数字桌搭图标
+    icon: path.join(__dirname, './assets/Deskset.png')
   })
   win.loadFile('../dist/manager.html')
   // win.loadURL('http://localhost:5173/manager.html')

@@ -8,8 +8,9 @@ import { useRouter } from "vue-router"
 
 const router = useRouter()
 
-const themePage   = () => { router.push({ path: "/theme"   }) }
+const welcomePage = () => { router.push({ path: "/welcome" }) }
 const widgetPage  = () => { router.push({ path: "/widget"  }) }
+const themePage   = () => { router.push({ path: "/theme"   }) }
 const developPage = () => { router.push({ path: "/develop" }) }
 </script>
 
@@ -18,6 +19,7 @@ const developPage = () => { router.push({ path: "/develop" }) }
 <body>
   <nav>
     <Navigate
+      @welcomePage="welcomePage"
       @widgetPage="widgetPage"
       @themePage="themePage"
       @developPage="developPage"
