@@ -4,6 +4,10 @@ const path = require('path')
 
 const { DataType, open, close, define } = require('ffi-rs')
 
+// === 组件信息 ===
+const widgetInfo = require('./widget_register')
+
+
 // === 调试模式 ===
 // - 1、加载 Vite 服务器页面，而不是构建的文件
 // - 2、显示主菜单 Menu 方便刷新页面
@@ -150,6 +154,10 @@ const appOpen = () => {
   open({
     library: 'setBottom.dll',
     path: './module_C/setBottom.dll'
+  })
+
+  ipcMain.handle('getWidgetInfo', async () => {
+    return widgetInfo
   })
 
   createDesktop()

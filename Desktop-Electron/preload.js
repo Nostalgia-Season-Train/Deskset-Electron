@@ -34,5 +34,8 @@ contextBridge.exposeInMainWorld('electron', {
   /* 打开外部浏览器 */
   openBrowser: (url) => {
     ipcRenderer.send('openBrowser', url)
-  }
+  },
+
+  /* 返回组件信息 */
+  getWidgetInfo: () => ipcRenderer.invoke('getWidgetInfo')
 })
