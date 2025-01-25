@@ -4,6 +4,11 @@ const path = require('path')
 
 const { DataType, open, close, define } = require('ffi-rs')
 
+// === 调试模式 ===
+// - 1、加载 Vite 服务器页面，而不是构建的文件
+// - 2、显示主菜单 Menu 方便刷新页面
+const DEBUG_MODE = true
+
 
 // === Desktop 窗口 ===
 const createDesktop = () => {
@@ -23,8 +28,12 @@ const createDesktop = () => {
     // 不能聚焦，不在任务栏显示
     focusable: false
   })
-  win.loadFile('../dist/index.html')
-  // win.loadURL('http://localhost:5173/index.html')
+
+  if (DEBUG_MODE) {
+    win.loadURL('http://localhost:5173/index.html')
+  } else {
+    win.loadFile('../dist/index.html')
+  }
 
   // 打开开发者工具
   ipcMain.on('openDevTool', () => {
@@ -118,10 +127,16 @@ const createManager = () => {
     // 数字桌搭图标
     icon: path.join(__dirname, './assets/Deskset.png')
   })
-  win.loadFile('../dist/manager.html')
-  // win.loadURL('http://localhost:5173/manager.html')
 
-  win.removeMenu()  // macOS 上不生效
+  if (DEBUG_MODE) {
+    win.loadURL('http://localhost:5173/manager.html')
+  } else {
+    win.loadFile('../dist/manager.html')
+  }
+
+  if (!DEBUG_MODE) {
+    win.removeMenu()  // macOS 上不生效
+  }
 
   // 管理窗口关闭，退出应用
   win.on('close', () => {
