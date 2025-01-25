@@ -91,19 +91,20 @@ const createDesktop = () => {
     })
     const bitmap = nativeImage.toPNG()
 
-    const folder = '../theme'
+    const name = String(theme?.name) || 'default'        // 主题名称
+    const data = JSON.stringify(theme?.widget, null, 2)  // 主题数据（配置）
+    const relpath = './theme/' + name + '/'  // 保存在 .theme/主题名称/ 下
+
+    // 创建目录
     try {
-      await fs.access(folder)
+      await fs.access(relpath)
     } catch (error) {
-      await fs.mkdir(folder)
+      await fs.mkdir(relpath, { recursive: true })
     }
 
-    const name = String(theme?.name) || 'default'  // 这里是 stem 无后缀名
-    const widgetJSON = JSON.stringify(theme?.widget, null, 2)
-
-    const path = folder + '/' + name
-    fs.writeFile(path + '.png', bitmap)
-    fs.writeFile(path + '.json', widgetJSON, { encoding: 'utf-8' })
+    // 保存文件
+    fs.writeFile(relpath + 'preview.png', bitmap)
+    fs.writeFile(relpath + 'data.json', data, { encoding: 'utf-8' })
   })
 
   // 打开外部浏览器

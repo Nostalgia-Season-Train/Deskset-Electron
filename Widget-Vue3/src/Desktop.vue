@@ -18,7 +18,7 @@ const openDevTool = () => {
 }
 
 // 主题保存
-const saveTheme = () => {
+const saveTheme = (themeName) => {
   let widgetStatus = []
 
   for (const widget of widgets) {
@@ -35,7 +35,7 @@ const saveTheme = () => {
   }
 
   const theme = {
-    name: 'Default',
+    name: themeName,
     widget: widgetStatus
   }
 
@@ -63,7 +63,7 @@ bc.onmessage = (event) => {
   }
 
   if (event.data?.action == "saveTheme") {
-    saveTheme()
+    saveTheme(event.data?.themeName)
   }
 }
 </script>

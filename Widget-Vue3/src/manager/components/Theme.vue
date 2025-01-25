@@ -3,8 +3,43 @@ import { DocumentAdd } from "@element-plus/icons-vue"
 
 const bc = new BroadcastChannel("Desktop")
 
+
+// 保存主题
+import { ElMessage, ElMessageBox } from 'element-plus'
+
 const saveTheme = () => {
-  bc.postMessage({ "action": "saveTheme" })
+  ElMessageBox.prompt('请输入主题名称', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    // inputPattern: ,
+    // inputErrorMessage: '名称无效'
+  })
+  .then(({ value }) => {
+    // 输入检查
+    if (value == null || value == '') {
+      throw new Error('名称不能为空')
+    }
+
+    // 通知桌面保存主题
+    bc.postMessage({
+      "action": "saveTheme",
+      "themeName": value
+    })
+
+    // 成功信息
+    ElMessage({
+      type: 'success',
+      message: `主题 ${value} 保存成功`
+    })
+  })
+  .catch((error) => {
+    if (error instanceof Error) {
+      ElMessage({
+        type: 'error',
+        message: error.message
+      })
+    }
+  })
 }
 
 const openTheme = () => {

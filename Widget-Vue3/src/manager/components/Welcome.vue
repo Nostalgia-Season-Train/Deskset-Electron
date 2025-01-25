@@ -39,7 +39,7 @@ const openReleasePage = () => {
   <div>问：为什么不采用 Qt、WPF 开发？而是占用内存和硬盘更高的 Web 技术</div>
   <div>答：
     相较于 C++、C#，Web 很容易二次开发。
-    如果你实在讨厌 Web，可以选择市面上更加成熟且轻量的美化程序，如 Rainmeter、SAO Utils 2 等
+    如果实在讨厌 Web，可以选择市面上更加成熟且轻量的美化程序，如 Rainmeter、SAO Utils 2 等
   </div>
 
 </div>
