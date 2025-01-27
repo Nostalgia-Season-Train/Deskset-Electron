@@ -10,7 +10,7 @@ let widgetList = []
 let num = 0
 
 for (const path in components) {
-  const path_parts = path.replace(".vue", "").split("/").slice(2)
+  const path_parts = path.replace(".vue", "").split("/").slice(1)
 
   const id = path_parts.join("/")  // 组件 ID = 类型/名称 - 文件夹/文件名
   const category = path_parts[0]   // 类型 - 文件夹
