@@ -43,7 +43,7 @@ const handleSelect = (index) => {
 </template>
 
 
-<style>
+<style scoped>
 .el-menu {
   height: 100%;
 }
