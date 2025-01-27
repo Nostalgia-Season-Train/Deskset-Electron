@@ -34,9 +34,9 @@ const createDesktop = () => {
   })
 
   if (DEBUG_MODE) {
-    win.loadURL('http://localhost:5173/index.html')
+    win.loadURL('http://localhost:5173/desktop.html')
   } else {
-    win.loadFile('./dist/index.html')
+    win.loadFile('./dist/desktop.html')
   }
 
   // 打开开发者工具
