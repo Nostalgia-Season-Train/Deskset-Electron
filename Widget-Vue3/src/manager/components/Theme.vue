@@ -31,6 +31,12 @@ const saveTheme = () => {
       type: 'success',
       message: `主题 ${value} 保存成功`
     })
+
+    // 1、保存需要时间，不要立即刷新
+    // 2、刷新两次，间隔 0.5s 保证图片显示
+    // 3、后面补上加载动画
+    setTimeout(refreshThemeList, 100)
+    setTimeout(refreshThemeList, 600)
   })
   .catch((error) => {
     if (error instanceof Error) {
@@ -42,14 +48,27 @@ const saveTheme = () => {
   })
 }
 
-const openTheme = () => {
+
+// 刷新/获取主题
+import { ref } from 'vue'
+
+const themes = ref()
+
+const refreshThemeList = async () => {
+  themes.value = await electron.getThemeInfo()
+}
+refreshThemeList()
+
+
+// 使用主题
+const useTheme = () => {
   console.log('openTheme')
-  // bc.postMessage({ "action": "openTheme" })
 }
 
-const openThemeConfig = () => {
+
+// 删除主题
+const deleteTheme = () => {
   console.log('openThemeConfig')
-  // bc.postMessage({ "action": "openThemeConfig" })
 }
 </script>
 
@@ -66,26 +85,30 @@ const openThemeConfig = () => {
     </el-card>
   </div>
 
-  <div class="theme-container" v-for="n in 100">
+  <div class="theme-container" v-for="theme in themes">
     <div class="left">
-      <el-card shadow="never"></el-card>
+      <el-card shadow="never">
+        <!-- 主题预览图：theme?.preview 路径格式：/theme/name/preview.png，否则可能无法预览 -->
+        <!-- 图片 URL 加入动态查询参数，强制浏览器刷新 -->
+        <img :src="theme?.preview + '?t=' + new Date()"></img>
+      </el-card>
     </div>
     <div class="right">
       <div class="word">
         <div class="name">
-          <span><b>{{ n }}</b></span>
+          <span><b>{{ theme?.name }}</b></span>
         </div>
         <div class="save-time">
           <span>保存日期：</span>
-          <span>2025-1-12</span>
+          <span>{{ theme?.data?.savetime }}</span>
         </div>
       </div>
       <div class="button">
-        <el-button type="primary" plain @click="openTheme">
+        <el-button type="primary" plain @click="useTheme">
           应用主题
         </el-button>
-        <el-button type="primary" plain @click="openThemeConfig">
-          打开配置
+        <el-button type="primary" plain @click="deleteTheme">
+          删除主题
         </el-button>
       </div>
     </div>
@@ -124,6 +147,16 @@ const openThemeConfig = () => {
 .theme-container>.left :deep(.el-card) {
   width: 240px;
   height: 135px;
+}
+.theme-container>.left :deep(.el-card>.el-card__body) {
+  width: 240px;
+  height: 135px;
+  padding: 0;
+}
+.theme-container>.left :deep(.el-card) img {
+  width: 240px;
+  height: 135px;
+  background-color: gray;
 }
 
 .theme-container>.right {

@@ -79,7 +79,7 @@ const createDesktop = () => {
     win.setIgnoreMouseEvents(!buffer[3])
   }
 
-  // 保存桌面组件截图
+  // 保存主题
   ipcMain.on('saveTheme', async (event, theme) => {
     const fs = require('fs').promises
 
@@ -159,6 +159,23 @@ const appOpen = () => {
 
   ipcMain.handle('getWidgetInfo', async () => {
     return widgetInfo
+  })
+  ipcMain.handle('getThemeInfo', async () => {
+    // 开发环境下 Electron 生成的主题跟 Vue3 不在同一目录，复制主题给 Vue3
+    if (DEBUG_MODE) {
+      const { exec } = require('child_process')
+      try {
+        // 防止意外执行，请在开发时取消注释
+        // exec('robocopy ".\\theme" "..\\Widget-Vue3\\theme" /MIR')
+      } catch {
+        // 捕获非零退出：robocopy 成功复制的退出代码是 1
+      }
+    }
+
+    // 返回主题信息
+    const { getAllThemes } = require('./theme_register')
+    const themeInfo = await getAllThemes()
+    return themeInfo
   })
 
   createDesktop()

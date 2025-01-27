@@ -30,6 +30,8 @@ contextBridge.exposeInMainWorld('electron', {
   saveTheme: (theme) => {
     ipcRenderer.send('saveTheme', theme)
   },
+  /* 返回主题信息 */
+  getThemeInfo: () => ipcRenderer.invoke('getThemeInfo'),
 
   /* 打开外部浏览器 */
   openBrowser: (url) => {

@@ -18,7 +18,15 @@ const openDevTool = () => {
 }
 
 // 主题保存
+import dayjs from "dayjs"
+
 const saveTheme = (themeName) => {
+  let themeData = {}
+
+  // 保存日期
+  themeData['savetime'] = String(dayjs().format('YYYY-MM-DD HH:mm:ss'))
+
+  // 组件状态
   let widgetStatus = []
 
   for (const widget of widgets) {
@@ -34,9 +42,12 @@ const saveTheme = (themeName) => {
     }
   }
 
+  themeData['widgets'] = widgetStatus
+
+  // 发送主题数据
   const theme = {
     name: themeName,
-    widget: widgetStatus
+    widget: themeData
   }
 
   electron.saveTheme(theme)
