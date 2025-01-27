@@ -10,7 +10,7 @@ import 'echarts'
 import Desktop from './Desktop.vue'
 import drag from './global/widgetDrag'
 
-import '../static/css/DefaultFont.css'
+import '../static/fonts/DefaultFont.css'
 
 
 const app = createApp(Desktop)

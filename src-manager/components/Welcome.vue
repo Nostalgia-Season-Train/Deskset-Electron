@@ -11,7 +11,7 @@ const openReleasePage = () => {
 
   <div class="center">
     <div>
-      <img src="../../assets/Deskset.png" width="160px"></img>
+      <img src="/static/icons/Deskset.png" width="160px"></img>
     </div>
     <div>欢迎使用数字桌搭 Deskset</div>
     <div>一款桌面美化软件</div>

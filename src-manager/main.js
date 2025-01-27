@@ -6,7 +6,7 @@ import 'element-plus/dist/index.css'
 
 import Manager from './Manager.vue'
 
-import '../../static/css/DefaultFont.css'
+import '../static/fonts/DefaultFont.css'
 
 
 // 动态路由
