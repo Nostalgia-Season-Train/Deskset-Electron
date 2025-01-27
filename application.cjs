@@ -5,7 +5,7 @@ const path = require('path')
 const { DataType, open, close, define } = require('ffi-rs')
 
 // === 组件信息 ===
-const widgetInfo = require('./widget_register')
+const widgetInfo = require('./src-application/widget_register.cjs')
 
 
 // === 调试模式 ===
@@ -18,7 +18,7 @@ const DEBUG_MODE = true
 const createDesktop = () => {
   const win = new BrowserWindow({
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'src-application/preload.cjs')
     },
     // 全屏
     fullscreen: true,
@@ -36,7 +36,7 @@ const createDesktop = () => {
   if (DEBUG_MODE) {
     win.loadURL('http://localhost:5173/index.html')
   } else {
-    win.loadFile('../dist/index.html')
+    win.loadFile('./dist/index.html')
   }
 
   // 打开开发者工具
@@ -124,19 +124,19 @@ const createDesktop = () => {
 const createManager = () => {
   const win = new BrowserWindow({
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, './src-application/preload.cjs')
     },
     width: 800,
     height: 600,
 
     // 数字桌搭图标
-    icon: path.join(__dirname, './assets/Deskset.png')
+    icon: path.join(__dirname, './static/icons/Deskset.png')
   })
 
   if (DEBUG_MODE) {
     win.loadURL('http://localhost:5173/manager.html')
   } else {
-    win.loadFile('../dist/manager.html')
+    win.loadFile('./dist/manager.html')
   }
 
   if (!DEBUG_MODE) {
@@ -154,7 +154,7 @@ const createManager = () => {
 const appOpen = () => {
   open({
     library: 'setBottom.dll',
-    path: './module_C/setBottom.dll'
+    path: './src-application/module_C/setBottom.dll'
   })
 
   ipcMain.handle('getWidgetInfo', async () => {
@@ -173,7 +173,7 @@ const appOpen = () => {
     }
 
     // 返回主题信息
-    const { getAllThemes } = require('./theme_register')
+    const { getAllThemes } = require('./src-application/theme_register.cjs')
     const themeInfo = await getAllThemes()
     return themeInfo
   })
