@@ -8,7 +8,7 @@ import 'element-plus/dist/index.css'
 import 'echarts'
 
 import Desktop from './Desktop.vue'
-import drag from './global/widgetDrag'
+import drag from './widgetDrag'
 
 import '../static/fonts/DefaultFont.css'
 

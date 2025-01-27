@@ -1,7 +1,7 @@
 <script setup>
 // 组件显示
 import { defineAsyncComponent } from "vue"
-import { widgets } from "./global/widget_register"
+import { widgets } from "../src-components/widget_register"
 
 function switchDisplay(id, isDisplay) {
   for (const widget of widgets)

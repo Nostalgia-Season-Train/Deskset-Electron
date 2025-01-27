@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import { number } from '../../global/widget_register'
+import { number } from '../../src-components/widget_register'
 
 export const widgetStore = defineStore('status', {
   state: () => ({

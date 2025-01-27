@@ -1,5 +1,5 @@
 // 导入组件
-const components = import.meta.glob("../components/*/*.vue")
+const components = import.meta.glob("./*/*.vue")
 
 
 // 遍历组件
