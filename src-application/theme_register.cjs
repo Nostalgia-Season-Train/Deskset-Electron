@@ -72,14 +72,29 @@ const getAllThemes = async () => {
 
 // 返回单个主题
 const getOneTheme = async (themeName) => {
-  const theme = await readTheme(themeName)
+  try {
+    const theme = await readTheme(themeName)
+    return theme
+  } catch (error) {
+    console.log(`返回 ${themeName} 主题失败\n`, error)
+  }
+}
 
-  return theme
+// 删除主题
+const deleteTheme = async (themeName) => {
+  try {
+    await readTheme(themeName)
+    const themeDir = path.join(THEME_LIB, themeName)
+    fs.rm(themeDir, { recursive: true })
+  } catch (error) {
+    console.log(`删除 ${themeName} 主题失败\n`, error)
+  }
 }
 
 
 /* === 导出 === */
 module.exports = {
   getAllThemes,
-  getOneTheme
+  getOneTheme,
+  deleteTheme
 }

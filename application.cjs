@@ -164,10 +164,16 @@ const appOpen = () => {
     const widgets = require('./src-application/widget_register.cjs')
     return widgets
   })
+
+  /* 主题 */
   ipcMain.handle('getAllThemes', async () => {
     const { getAllThemes } = require('./src-application/theme_register.cjs')
     const themes = await getAllThemes()
     return themes
+  })
+  ipcMain.on('deleteTheme', async (event, themeName) => {
+    const { deleteTheme } = require('./src-application/theme_register.cjs')
+    deleteTheme(themeName)
   })
 
   createDesktop()

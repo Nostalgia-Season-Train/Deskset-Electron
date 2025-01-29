@@ -29,8 +29,9 @@ contextBridge.exposeInMainWorld('electron', {
   /* 返回所有组件信息 */
   getAllWidgets: () => ipcRenderer.invoke('getAllWidgets'),
 
-  /* 返回所有主题信息 */
-  getAllThemes: () => ipcRenderer.invoke('getAllThemes')
+  /* 主题 */
+  getAllThemes: () => ipcRenderer.invoke('getAllThemes'),
+  deleteTheme: (themeName) => ipcRenderer.send('deleteTheme', themeName)
 })
 
 
@@ -40,12 +41,9 @@ contextBridge.exposeInMainWorld('electron', {
 // - 管理 => 桌面页面 => 桌面窗口
 contextBridge.exposeInMainWorld('winDesktop', {
   /* 主题 */
-  // 保存主题
   saveTheme: (theme) => ipcRenderer.send('saveTheme', theme),
-  // 返回单个主题信息
   getOneTheme: (themeName) => ipcRenderer.invoke('getOneTheme', themeName),
 
   /* 开发 */
-  // 打开开发者工具
   openDevTool: () => ipcRenderer.send('openDevTool')
 })

@@ -9,7 +9,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 
 const saveTheme = () => {
   ElMessageBox.prompt('请输入主题名称', {
-    confirmButtonText: '确认',
+    confirmButtonText: '保存',
     cancelButtonText: '取消',
     // inputPattern: ,
     // inputErrorMessage: '名称无效'
@@ -65,8 +65,29 @@ const useTheme = (themeName) => {
 
 
 // 删除主题
-const deleteTheme = () => {
-  console.log('openThemeConfig')
+const deleteTheme = (themeName) => {
+  if (themeName == undefined)
+    return
+
+  ElMessageBox.confirm(
+    `是否删除 ${themeName} 主题？`,
+    '删除确认',
+    {
+      confirmButtonText: '删除',
+      cancelButtonText: '取消'
+    }
+  )
+  .then(() => {
+    window.electron.deleteTheme(themeName)
+
+    ElMessage({
+      type: 'success',
+      message: `主题 ${themeName} 删除成功`
+    })
+
+    setTimeout(refreshThemeList, 100)
+  })
+  .catch()
 }
 </script>
 
@@ -105,7 +126,7 @@ const deleteTheme = () => {
         <el-button type="primary" plain @click="useTheme(theme?.name)">
           应用主题
         </el-button>
-        <el-button type="primary" plain @click="deleteTheme">
+        <el-button type="primary" plain @click="deleteTheme(theme?.name)">
           删除主题
         </el-button>
       </div>
