@@ -13,8 +13,8 @@ export const widgetStore = defineStore('status', {
 // === 实验性：动态导入 Vue 组件（打包后） ===
 
 // 获取组件信息
-const getWidgetInfo = async () => {
-  const widgetInfo = await electron.getWidgetInfo()
-  console.log(widgetInfo)
+const getAllWidgets = async () => {
+  const widgets = await window.electron.getAllWidgets()
+  console.log(widgets)
 }
-getWidgetInfo()
+getAllWidgets()

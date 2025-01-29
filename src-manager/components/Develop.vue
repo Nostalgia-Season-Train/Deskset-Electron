@@ -2,15 +2,14 @@
 import { Refresh, CopyDocument, Upload } from "@element-plus/icons-vue"
 
 
-// 跟 Desktop 跨页面通信：桌面刷新，桌面开发工具
-const bc = new BroadcastChannel("Desktop")
+import desktop from './desktop'
 
 const refreshPage = () => {
-  bc.postMessage({ "action": "refreshPage" })
+  desktop.refresh()
 }
 
 const openDevTool = () => {
-  bc.postMessage({ "action": "openDevTool" })
+  desktop.openDevTool()
 }
 </script>
 

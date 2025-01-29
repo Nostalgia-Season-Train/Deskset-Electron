@@ -9,12 +9,9 @@ function switchDisplay(id, isDisplay) {
       widget.isDisplay.value = isDisplay
 }
 
-// 桌面刷新，开发工具
+// 刷新桌面
 const refreshPage = () => {
   location.reload()
-}
-const openDevTool = () => {
-  electron.openDevTool()
 }
 
 // 主题保存
@@ -50,19 +47,16 @@ const saveTheme = (themeName) => {
     widget: themeData
   }
 
-  electron.saveTheme(theme)
+  window.winDesktop.saveTheme(theme)
 }
 
 
 // 桌面管理：跨页面通信，管理页 /manager.html
-const bc = new BroadcastChannel("Desktop")
+const bc = new BroadcastChannel("pageDesktop")
 
 bc.onmessage = (event) => {
   if (event.data?.action == "refreshPage") {
     refreshPage()
-  }
-  if (event.data?.action == "openDevTool") {
-    openDevTool()
   }
 
   if (event.data?.action == "switchDisplay") {

@@ -1,7 +1,7 @@
 <script setup>
 import { DocumentAdd } from "@element-plus/icons-vue"
 
-const bc = new BroadcastChannel("Desktop")
+import desktop from './desktop'
 
 
 // 保存主题
@@ -21,10 +21,7 @@ const saveTheme = () => {
     }
 
     // 通知桌面保存主题
-    bc.postMessage({
-      "action": "saveTheme",
-      "themeName": value
-    })
+    desktop.saveTheme(value)
 
     // 成功信息
     ElMessage({
@@ -55,7 +52,7 @@ import { ref } from 'vue'
 const themes = ref()
 
 const refreshThemeList = async () => {
-  themes.value = await electron.getThemeInfo()
+  themes.value = await window.electron.getAllThemes()
 }
 refreshThemeList()
 

@@ -24,15 +24,11 @@ import { widgetStore } from "../store/widget"
 const value按钮 = widgetStore().isDisplay
 
 
-// 桌面管理
-const bc = new BroadcastChannel("Desktop")
+// 控制桌面上的组件
+import desktop from './desktop'
 
 const triggerDisplay = (id, isDisplay) => {
-  bc.postMessage({
-    "action": "switchDisplay",
-    "id": id,
-    "isDisplay": isDisplay
-  })
+  desktop.switchWidget(id, isDisplay)
 }
 </script>
 

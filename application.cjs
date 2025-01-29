@@ -4,10 +4,6 @@ const path = require('path')
 
 const { DataType, open, close, define } = require('ffi-rs')
 
-// === 组件信息 ===
-const widgetInfo = require('./src-application/widget_register.cjs')
-
-
 // === 调试模式 ===
 // - 1、加载 Vite 服务器页面，而不是构建的文件
 // - 2、显示主菜单 Menu 方便刷新页面
@@ -157,25 +153,14 @@ const appOpen = () => {
     path: './src-application/module_C/setBottom.dll'
   })
 
-  ipcMain.handle('getWidgetInfo', async () => {
-    return widgetInfo
+  ipcMain.handle('getAllWidgets', async () => {
+    const widgets = require('./src-application/widget_register.cjs')
+    return widgets
   })
-  ipcMain.handle('getThemeInfo', async () => {
-    // 开发环境下 Electron 生成的主题跟 Vue3 不在同一目录，复制主题给 Vue3
-    if (DEBUG_MODE) {
-      const { exec } = require('child_process')
-      try {
-        // 防止意外执行，请在开发时取消注释
-        // exec('robocopy ".\\theme" "..\\Widget-Vue3\\theme" /MIR')
-      } catch {
-        // 捕获非零退出：robocopy 成功复制的退出代码是 1
-      }
-    }
-
-    // 返回主题信息
+  ipcMain.handle('getAllThemes', async () => {
     const { getAllThemes } = require('./src-application/theme_register.cjs')
-    const themeInfo = await getAllThemes()
-    return themeInfo
+    const themes = await getAllThemes()
+    return themes
   })
 
   createDesktop()
