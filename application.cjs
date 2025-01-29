@@ -25,8 +25,8 @@ const createDesktop = () => {
     transparent: true,
     frame: false,
 
-    // 不能聚焦，不在任务栏显示
-    focusable: false
+    // 禁用聚焦，不在任务栏显示
+    // focusable: false  // 已废弃，影响输入框 input
   })
 
   if (DEBUG_MODE) {
