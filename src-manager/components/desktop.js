@@ -16,6 +16,10 @@ const desktop = {
     'action': 'saveTheme',
     'themeName': themeName
   }),
+  useTheme: async (themeName) => pageDesktop.postMessage({
+    'action': 'useTheme',
+    'themeName': themeName
+  }),
 
   /* 开发 */
   refresh: async () => pageDesktop.postMessage({ 'action': 'refreshPage' }),

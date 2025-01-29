@@ -71,7 +71,11 @@ const getAllThemes = async () => {
 }
 
 // 返回单个主题
-const getOneTheme = async (themeName) => {}
+const getOneTheme = async (themeName) => {
+  const theme = await readTheme(themeName)
+
+  return theme
+}
 
 
 /* === 导出 === */

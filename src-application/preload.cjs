@@ -42,6 +42,8 @@ contextBridge.exposeInMainWorld('winDesktop', {
   /* 主题 */
   // 保存主题
   saveTheme: (theme) => ipcRenderer.send('saveTheme', theme),
+  // 返回单个主题信息
+  getOneTheme: (themeName) => ipcRenderer.invoke('getOneTheme', themeName),
 
   /* 开发 */
   // 打开开发者工具

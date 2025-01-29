@@ -1,14 +1,49 @@
 <script setup>
 /* === 组件 === */
+import { shallowRef, triggerRef } from 'vue'
+import { defineAsyncComponent } from 'vue'
+import { widgets, number } from '../src-components/widget_register'
 
-// 组件显示
-import { defineAsyncComponent } from "vue"
-import { widgets } from "../src-components/widget_register"
+const widgetNowList = shallowRef([])
 
-const switchDisplay = async (widgetId, isDisplay) => {
-  for (const widget of widgets)
-    if (widget.id == widgetId)
-      widget.isDisplay.value = isDisplay
+// 初始化组件清单
+// 快速开发，后面优化掉这部分
+const initWidgetNowList = async () => {
+  let widgetListInit = []
+  for (let n = 0; n < number; n++) {
+    widgetListInit.push({
+      id: undefined,      // 组件 id
+      style: undefined,   // 包裹组件的外部样式
+      isDisplay: false,   // 是否显示组件
+      content: undefined  // 组件内容，通过异步加载
+    })
+  }
+  widgetNowList.value = widgetListInit
+}
+initWidgetNowList()
+
+// 切换组件显示
+const switchWidgetDisplay = async (widgetId, isDisplay, style=undefined) => {
+  const num = widgets.findIndex(widget => widget.id == widgetId)
+  if (num == -1) {
+    throw Error(`没有 ${widgetId} 组件`)
+  }
+
+  if (isDisplay) {
+    widgetNowList.value[num].id = widgets[num].id
+    widgetNowList.value[num].content = defineAsyncComponent(widgets[num].content)
+    widgetNowList.value[num].isDisplay = true
+    if (style != undefined)
+      widgetNowList.value[num].style = style
+  } else {
+    widgetNowList.value[num].id = undefined
+    widgetNowList.value[num].style = undefined
+    widgetNowList.value[num].isDisplay = false
+    widgetNowList.value[num].content = undefined
+  }
+
+  // shallowRef.value.arry 不是响应式的，手动更新
+  triggerRef(widgetNowList)
 }
 
 
@@ -27,14 +62,11 @@ const saveTheme = async (themeName) => {
   let widgetStatus = []
 
   for (const widget of widgets) {
-    if (widget.isDisplay.value == true) {
-      const widgetHTML = document.getElementById(widget.id)
-      const widgetHTMLInfo = widgetHTML.getBoundingClientRect()
-
+    const widgetHTML = document.getElementById(widget.id)
+    if (widgetHTML != null) {
       widgetStatus.push({
         id: widget.id,
-        pos: { x: widgetHTMLInfo.x,
-               y: widgetHTMLInfo.y }
+        style: widgetHTML.style.cssText
       })
     }
   }
@@ -51,7 +83,18 @@ const saveTheme = async (themeName) => {
 }
 
 // 使用主题
-const useTheme = async (themeName) => {}
+const useTheme = async (themeName) => {
+  const theme = await window.winDesktop.getOneTheme(themeName)
+  const widgets = theme?.data?.widgets
+
+  await initWidgetNowList()
+  for (const widget of widgets) {
+    const widgetId = widget?.id
+    if (widgetId != undefined) {
+      await switchWidgetDisplay(widgetId, true, widget?.style)
+    }
+  }
+}
 
 
 /* === 开发 === */
@@ -68,20 +111,26 @@ const refreshPage = async () => {
 const bc = new BroadcastChannel("pageDesktop")
 
 bc.onmessage = async (event) => {
-  if (event.data?.action == "refreshPage") {
-    refreshPage()
-  }
-
+  /* 组件 */
   if (event.data?.action == "switchDisplay") {
     const id = event.data?.id
     const isDisplay = event.data?.isDisplay
     if (id != undefined && isDisplay != undefined) {
-      switchDisplay(id, isDisplay)
+      switchWidgetDisplay(id, isDisplay)
     }
   }
 
+  /* 主题 */
   if (event.data?.action == "saveTheme") {
     saveTheme(event.data?.themeName)
+  }
+  if (event.data?.action == "useTheme") {
+    useTheme(event.data?.themeName)
+  }
+
+  /* 开发 */
+  if (event.data?.action == "refreshPage") {
+    refreshPage()
   }
 }
 </script>
@@ -91,14 +140,16 @@ bc.onmessage = async (event) => {
 <body>
   <!-- 组件容器 -->
   <div class="container">
-    <div v-for="widget in widgets">
+    <div v-for="widget in widgetNowList">
       <Suspense>
-        <component
+        <div
           :id="widget.id"
-          :is="defineAsyncComponent(widget.content)"
-          v-if="widget.isDisplay.value"
+          :style="widget.style"
+          v-if="widget.isDisplay"
           v-widget-drag
-        />
+        >
+          <component :is="widget.content"/>
+        </div>
       </Suspense>
     </div>
   </div>

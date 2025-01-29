@@ -58,8 +58,9 @@ refreshThemeList()
 
 
 // 使用主题
-const useTheme = () => {
-  console.log('openTheme')
+const useTheme = (themeName) => {
+  if (themeName != undefined)
+    desktop.useTheme(themeName)
 }
 
 
@@ -101,7 +102,7 @@ const deleteTheme = () => {
         </div>
       </div>
       <div class="button">
-        <el-button type="primary" plain @click="useTheme">
+        <el-button type="primary" plain @click="useTheme(theme?.name)">
           应用主题
         </el-button>
         <el-button type="primary" plain @click="deleteTheme">

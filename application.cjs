@@ -109,6 +109,13 @@ const createDesktop = () => {
     shell.openExternal(url)
   })
 
+  // 返回单个主题
+  ipcMain.handle('getOneTheme', async (event, themeName) => {
+    const { getOneTheme } = require('./src-application/theme_register.cjs')
+    const theme = await getOneTheme(themeName)
+    return theme
+  })
+
   // 关闭窗口时，清除透明度检查
   win.on('close', () => {
     clearInterval(checkTransInterval)
