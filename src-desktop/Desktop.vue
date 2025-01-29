@@ -1,23 +1,23 @@
 <script setup>
+/* === 组件 === */
+
 // 组件显示
 import { defineAsyncComponent } from "vue"
 import { widgets } from "../src-components/widget_register"
 
-function switchDisplay(id, isDisplay) {
+const switchDisplay = async (widgetId, isDisplay) => {
   for (const widget of widgets)
-    if (widget.id == id)
+    if (widget.id == widgetId)
       widget.isDisplay.value = isDisplay
 }
 
-// 刷新桌面
-const refreshPage = () => {
-  location.reload()
-}
 
-// 主题保存
+/* === 主题 === */
+
+// 保存主题
 import dayjs from "dayjs"
 
-const saveTheme = (themeName) => {
+const saveTheme = async (themeName) => {
   let themeData = {}
 
   // 保存日期
@@ -50,11 +50,24 @@ const saveTheme = (themeName) => {
   window.winDesktop.saveTheme(theme)
 }
 
+// 使用主题
+const useTheme = async (themeName) => {}
+
+
+/* === 开发 === */
+
+// 刷新桌面
+const refreshPage = async () => {
+  location.reload()
+}
+
+
+/* === 管理页控制桌面页 === */
 
 // 桌面管理：跨页面通信，管理页 /manager.html
 const bc = new BroadcastChannel("pageDesktop")
 
-bc.onmessage = (event) => {
+bc.onmessage = async (event) => {
   if (event.data?.action == "refreshPage") {
     refreshPage()
   }
