@@ -85,7 +85,14 @@ const saveTheme = async (themeName) => {
 // 使用主题
 const useTheme = async (themeName) => {
   const theme = await window.winDesktop.getOneTheme(themeName)
+  if (theme == undefined) {
+    throw Error(`主题 ${themeName} 读取失败`)
+  }
+
   const widgets = theme?.data?.widgets
+  if (widgets == undefined) {
+    throw Error(`主题 ${themeName} 中的组件读取失败`)
+  }
 
   await initWidgetNowList()
   for (const widget of widgets) {
