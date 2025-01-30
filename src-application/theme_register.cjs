@@ -4,8 +4,8 @@
 // - 主题     theme/theme-name/
 // - 主题文件 theme/theme-name/theme-file
 
-const THEME_LIB = './theme'      // 程序用路径，对应 electron.exe 同级目录
-const THEME_LIB_VITE = '/theme'  // 网页用路径，对应 vite.config.js 同级目录
+const THEME_LIB = './themes'      // 程序用路径，对应 electron.exe 同级目录
+const THEME_LIB_VITE = '/themes'  // 网页用路径，对应 vite.config.js 同级目录
 
 
 /* === 函数 === */
