@@ -71,7 +71,7 @@ const deleteTheme = (themeName) => {
 
   ElMessageBox.confirm(
     `是否删除 ${themeName} 主题？`,
-    '删除确认',
+    '删除主题',
     {
       confirmButtonText: '删除',
       cancelButtonText: '取消'
