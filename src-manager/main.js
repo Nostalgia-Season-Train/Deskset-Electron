@@ -13,6 +13,7 @@ import '../static/fonts/DefaultFont.css'
 import { createMemoryHistory, createRouter } from 'vue-router'
 
 import Welcome from './components/Welcome.vue'
+import Support from './components/Support.vue'
 import Widget  from './components/Widget.vue'
 import Theme   from './components/Theme.vue'
 import Develop from './components/Develop.vue'
@@ -21,6 +22,7 @@ const routes = [
   { path: '/', component: Welcome },
 
   { path: '/welcome', component: Welcome },
+  { path: '/support', component: Support },
   { path: '/widget',  component: Widget },
   { path: '/theme',   component: Theme },
   { path: '/develop', component: Develop }
