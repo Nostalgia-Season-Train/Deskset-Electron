@@ -1,8 +1,16 @@
-// 导入组件
-const components = import.meta.glob("./*/*.vue")
+/* === 导入组件 === */
+const rawComponents = import.meta.glob("./*/*.vue")
+
+// 按中文排序
+const sortKeys = Object.keys(rawComponents).sort((a, b) => a.localeCompare(b, 'zh-CN'))
+const sortDict = sortKeys.reduce((add, key) => {
+  add[key] = rawComponents[key]
+  return add
+}, {})
+const components = sortDict
 
 
-// 遍历组件
+/* === 遍历组件 === */
 import { ref } from "vue"
 
 let categoryList = new Map()
@@ -34,7 +42,7 @@ for (const path in components) {
 }
 
 
-// 导出组件
+/* === 导出组件 === */
 export const categorys = categoryList
 export const widgets = widgetList
 export const number = num
