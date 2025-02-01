@@ -89,7 +89,7 @@ const createDesktop = () => {
 
     const name = String(theme?.name) || 'default'        // 主题名称
     const data = JSON.stringify(theme?.widget, null, 2)  // 主题数据（配置）
-    const relpath = './theme/' + name + '/'  // 保存在 .theme/主题名称/ 下
+    const relpath = './themes/' + name + '/'  // 保存在 ./themes/主题名称/ 下
 
     // 创建目录
     try {
