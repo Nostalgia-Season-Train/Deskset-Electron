@@ -11,11 +11,63 @@ const refreshPage = () => {
 const openDevTool = () => {
   desktop.openDevTool()
 }
+
+
+/* === 配置 === */
+import { ref } from 'vue'
+import axios from 'axios'
+
+const conf_vault = ref('')
+
+const get_conf_vault = async () => {
+  const rep = await axios.get('http://127.0.0.1:8000/v0/config/app-obsidian-vault')
+  conf_vault.value = rep.data.data
+}
+get_conf_vault()
+
+const set_conf_vault = async () => {
+  const rep = await axios.post(
+    'http://127.0.0.1:8000/v0/config/app-obsidian-vault',
+    { 'path': conf_vault.value }
+  )
+
+  if (rep.data.success) {
+    ElMessage({
+      type: 'success',
+      message: '设置 Obsidian 仓库成功'
+    })
+  } else if (!rep.data.success && conf_vault.value == '') {
+    ElMessage({
+      message: '解绑 Obsidian 仓库'
+    })
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '设置 Obsidian 仓库失败'
+    })
+  }
+}
 </script>
 
 
 <template>
 <el-scrollbar>
+
+  <div class="option">
+    <div class="word">
+      <div class="name">Obsidian 仓库</div>
+      <div class="description">设置数字桌搭绑定的 Obsidian 仓库</div>
+    </div>
+    <div class="input">
+      <el-input
+        v-model="conf_vault"
+        @change="set_conf_vault"
+        clearable
+        style="width: 180px;"
+        placeholder="仓库路径"
+      />
+    </div>
+  </div>
 
   <div class="option">
     <div class="word">
