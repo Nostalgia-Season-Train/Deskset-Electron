@@ -10,6 +10,10 @@ const desktop = {
     'id': widgetId,
     'isDisplay': isDisplay
   }),
+  getWidgetOnDesktop: async (widgetId) => pageDesktop.postMessage({
+    'action': 'getWidgetOnDesktop',
+    'id': widgetId,
+  }),
 
   /* 主题 */
   saveTheme: async (themeName) => pageDesktop.postMessage({

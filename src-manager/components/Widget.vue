@@ -15,7 +15,22 @@ const handleSelect = (key, keyPath) => {
       widgetPreview.value = defineAsyncComponent(widget.content)
     }
   }
+
+  // 选择一次，查询一次桌面上的组件信息
+  desktop.getWidgetOnDesktop(id)
 }
+
+
+// 组件信息显示
+import { onBeforeUnmount } from 'vue'
+
+const pageManager = new BroadcastChannel('pageManager')
+
+pageManager.onmessage = async (event) => {
+  console.log(event.data)
+}
+onBeforeUnmount(() => { pageManager.onmessage = null })  // 解除绑定，否则重进页面后 onmessage 会执行两次以上
+desktop.getWidgetOnDesktop(widgets[0].id)  // 每次进入页面，查询第一个桌面上的组件
 
 
 // 组件开关

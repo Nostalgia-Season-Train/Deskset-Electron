@@ -101,6 +101,7 @@ const refreshPage = async () => {
 
 // 桌面管理：跨页面通信，管理页 /manager.html
 const bc = new BroadcastChannel("pageDesktop")
+const pageManager = new BroadcastChannel('pageManager')
 
 bc.onmessage = async (event) => {
   /* 组件 */
@@ -109,6 +110,23 @@ bc.onmessage = async (event) => {
     const isDisplay = event.data?.isDisplay
     if (id != undefined && isDisplay != undefined) {
       switchWidgetDisplay(id, isDisplay)
+    }
+  }
+  if (event.data?.action == 'getWidgetOnDesktop') {
+    const widgetId = event.data?.id
+    const widgetHTML = document.getElementById(widgetId)
+    if (widgetHTML != null) {
+      const widget = {
+        'isDisplay': true,
+        'style': widgetHTML.style.cssText
+      }
+      pageManager.postMessage(widget)
+    } else {
+      const widget = {
+        'isDisplay': false,
+        'style': ''
+      }
+      pageManager.postMessage(widget)
     }
   }
 
