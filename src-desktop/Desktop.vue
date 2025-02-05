@@ -2,48 +2,34 @@
 /* === 组件 === */
 import { shallowRef, triggerRef } from 'vue'
 import { defineAsyncComponent } from 'vue'
-import { widgets, number } from '../src-components/widget_register'
+import { widgets as rawWidgets } from '../src-components/widget_register'
 
-const widgetNowList = shallowRef([])
-
-// 初始化组件清单
-// 快速开发，后面优化掉这部分
-const initWidgetNowList = async () => {
-  let widgetListInit = []
-  for (let n = 0; n < number; n++) {
-    widgetListInit.push({
-      id: undefined,      // 组件 id
-      style: undefined,   // 包裹组件的外部样式
-      isDisplay: false,   // 是否显示组件
-      content: undefined  // 组件内容，通过异步加载
-    })
-  }
-  widgetNowList.value = widgetListInit
-}
-initWidgetNowList()
+const widgets = shallowRef(rawWidgets)
 
 // 切换组件显示
 const switchWidgetDisplay = async (widgetId, isDisplay, style=undefined) => {
-  const num = widgets.findIndex(widget => widget.id == widgetId)
+  const num = widgets.value.findIndex(widget => widget.id == widgetId)
   if (num == -1) {
     throw Error(`没有 ${widgetId} 组件`)
   }
 
   if (isDisplay) {
-    widgetNowList.value[num].id = widgets[num].id
-    widgetNowList.value[num].content = defineAsyncComponent(widgets[num].content)
-    widgetNowList.value[num].isDisplay = true
+    widgets.value[num].isDisplay = true
+
+    // js 直接 object.attribute 添加新属性
+    // 异步加载组件（注：widgets.value[num].content 也会改变 rawWidgets[num].content）
+    widgets.value[num].contentLoad = defineAsyncComponent(widgets.value[num].content)
     if (style != undefined)
-      widgetNowList.value[num].style = style
+      widgets.value[num].style = style
   } else {
-    widgetNowList.value[num].id = undefined
-    widgetNowList.value[num].style = undefined
-    widgetNowList.value[num].isDisplay = false
-    widgetNowList.value[num].content = undefined
+    widgets.value[num].isDisplay = false
+
+    widgets.value[num].contentLoad = undefined
+    widgets.value[num].style = undefined
   }
 
   // shallowRef.value.arry 不是响应式的，手动更新
-  triggerRef(widgetNowList)
+  triggerRef(widgets)
 }
 
 
@@ -94,7 +80,6 @@ const useTheme = async (themeName) => {
     throw Error(`主题 ${themeName} 中的组件读取失败`)
   }
 
-  await initWidgetNowList()
   for (const widget of widgets) {
     const widgetId = widget?.id
     if (widgetId != undefined) {
@@ -147,7 +132,7 @@ bc.onmessage = async (event) => {
 <body>
   <!-- 组件容器 -->
   <div class="container">
-    <div v-for="widget in widgetNowList">
+    <div v-for="widget in widgets">
       <Suspense>
         <div
           :id="widget.id"
@@ -155,7 +140,7 @@ bc.onmessage = async (event) => {
           v-if="widget.isDisplay"
           v-widget-drag
         >
-          <component :is="widget.content"/>
+          <component :is="widget.contentLoad"/>
         </div>
       </Suspense>
     </div>

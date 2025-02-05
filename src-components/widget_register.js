@@ -11,8 +11,6 @@ const components = sortDict
 
 
 /* === 遍历组件 === */
-import { ref } from "vue"
-
 let categoryList = new Map()
 let widgetList = []
 let num = 0
@@ -35,7 +33,7 @@ for (const path in components) {
     category: category,
     name:     name,
     content: components[path],
-    isDisplay: ref(false)
+    isDisplay: false
   })
 
   num++
