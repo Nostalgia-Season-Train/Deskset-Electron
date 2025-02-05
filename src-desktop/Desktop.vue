@@ -47,12 +47,12 @@ const saveTheme = async (themeName) => {
   // 组件状态
   let widgetStatus = []
 
-  for (const widget of widgets) {
+  for (const widget of widgets.value) {
     const widgetHTML = document.getElementById(widget.id)
     if (widgetHTML != null) {
       widgetStatus.push({
         id: widget.id,
-        style: widgetHTML.style.cssText
+        style: widgetHTML.style.cssText  // 拖拽不会改变 widget.style
       })
     }
   }
