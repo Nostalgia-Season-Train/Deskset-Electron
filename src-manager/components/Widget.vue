@@ -27,16 +27,16 @@ import { onBeforeUnmount } from 'vue'
 const pageManager = new BroadcastChannel('pageManager')
 
 pageManager.onmessage = async (event) => {
-  console.log(event.data)
+  value按钮.value = event.data?.isDisplay
 }
 onBeforeUnmount(() => { pageManager.onmessage = null })  // 解除绑定，否则重进页面后 onmessage 会执行两次以上
 desktop.getWidgetOnDesktop(widgets[0].id)  // 每次进入页面，查询第一个桌面上的组件
 
 
 // 组件开关
-import { widgetStore } from "../store/widget"
+import { ref } from 'vue'
 
-const value按钮 = widgetStore().isDisplay
+const value按钮 = ref(false)
 
 
 // 控制桌面上的组件
@@ -77,14 +77,11 @@ const triggerDisplay = (id, isDisplay) => {
           <component :is="widgetPreview"/>
         </Suspense>
       </div>
-      <!-- 避免 v-model 触发 el-switch 切换动画，仅由鼠标触发动画 -->
-      <div v-for="n in number">
-        <el-switch
-          v-if="widgetNow.num == n - 1"
-          v-model="value按钮[widgetNow.num]"
-          @click="triggerDisplay(widgetNow.id, value按钮[widgetNow.num])"
-        />
-      </div>
+      <!-- 就让 v-model 变化触发 el-switch 切换动画，当成特性 -->
+      <el-switch
+        v-model="value按钮"
+        @click="triggerDisplay(widgetNow.id, value按钮)"
+      />
     </el-scrollbar>
   </el-main>
 
