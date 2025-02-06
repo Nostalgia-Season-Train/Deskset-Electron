@@ -30,6 +30,14 @@ const switchWidgetDisplay = async (widgetId, isDisplay, style=undefined) => {
 
   // shallowRef.value.arry 不是响应式的，手动更新
   triggerRef(widgets)
+
+  // 返回 Promise 确保 switchWidgetDisplay 能被正确 await
+  return new Promise((resolve) => { resolve() })  // 中括号包裹函数保持行为一致
+}
+
+// 关闭所有组件，await Promise.all() 等待异步全部完成
+const closeAllWidgets = async () => {
+  await Promise.all(widgets.value.map((widget) => switchWidgetDisplay(widget.id, false)))
 }
 
 
@@ -80,6 +88,8 @@ const useTheme = async (themeName) => {
     throw Error(`主题 ${themeName} 中的组件读取失败`)
   }
 
+  // 先关闭当前组件，再打开
+  await closeAllWidgets()
   for (const widget of widgets) {
     const widgetId = widget?.id
     if (widgetId != undefined) {
@@ -117,12 +127,14 @@ bc.onmessage = async (event) => {
     const widgetHTML = document.getElementById(widgetId)
     if (widgetHTML != null) {
       const widget = {
+        'id': widgetId,
         'isDisplay': true,
         'style': widgetHTML.style.cssText
       }
       pageManager.postMessage(widget)
     } else {
       const widget = {
+        'id': widgetId,
         'isDisplay': false,
         'style': ''
       }
