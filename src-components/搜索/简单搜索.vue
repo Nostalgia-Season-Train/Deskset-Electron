@@ -18,3 +18,14 @@ const refresh = () => {
     />
   </div>
 </template>
+
+
+<style scoped>
+/* 搜索框字体上下居中 */
+:deep(.el-input__inner) {
+  display: flex;
+  align-items: center;
+  /* 上面偶尔生效，直接文字抬高 0.25px */
+  padding-bottom: 0.25px;
+}
+</style>
