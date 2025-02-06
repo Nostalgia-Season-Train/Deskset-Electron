@@ -27,23 +27,32 @@ import { onBeforeUnmount } from 'vue'
 const pageManager = new BroadcastChannel('pageManager')
 
 pageManager.onmessage = async (event) => {
-  value按钮.value = event.data?.isDisplay
+  value显示.value = event.data.isDisplay
+  if (event.data.class.includes('prop-lock')) {
+    value锁定.value = true
+  } else {
+    value锁定.value = false
+  }
 }
 onBeforeUnmount(() => { pageManager.onmessage = null })  // 解除绑定，否则重进页面后 onmessage 会执行两次以上
 desktop.getWidgetOnDesktop(widgets[0].id)  // 每次进入页面，查询第一个桌面上的组件
 
 
-// 组件开关
+/* === 组件控制 === */
 import { ref } from 'vue'
-
-const value按钮 = ref(false)
-
-
-// 控制桌面上的组件
 import desktop from './desktop'
 
-const triggerDisplay = (id, isDisplay) => {
-  desktop.switchWidget(id, isDisplay)
+// 是否显示
+const value显示 = ref(false)
+const triggerDisplay = (id) => {
+  desktop.switchDisplay(id, value显示.value)
+  setTimeout(() => desktop.switchDrag(id, value锁定.value), 100)  // 加入延时，确保打开后再锁定
+}
+
+// 是否锁定
+const value锁定 = ref(false)
+const triggerDrag = (id) => {
+  desktop.switchDrag(id, value锁定.value)
 }
 </script>
 
@@ -78,10 +87,20 @@ const triggerDisplay = (id, isDisplay) => {
         </Suspense>
       </div>
       <!-- 就让 v-model 变化触发 el-switch 切换动画，当成特性 -->
-      <el-switch
-        v-model="value按钮"
-        @click="triggerDisplay(widgetNow.id, value按钮)"
-      />
+      <div class="option">
+        <div>打开组件</div>
+        <el-switch
+          v-model="value显示"
+          @click="triggerDisplay(widgetNow.id)"
+        />
+      </div>
+      <div class="option">
+        <div>锁定拖动</div>
+        <el-switch
+          v-model="value锁定"
+          @click="triggerDrag(widgetNow.id)"
+        />
+      </div>
     </el-scrollbar>
   </el-main>
 
@@ -113,5 +132,21 @@ const triggerDisplay = (id, isDisplay) => {
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid rgba(155,155,155,0.25);
+  border-radius: 3px;
+}
+
+.option {
+  margin: 5px 5px 0 5px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: 1px solid rgba(155,155,155,0.25);
+  border-radius: 5px;
 }
 </style>

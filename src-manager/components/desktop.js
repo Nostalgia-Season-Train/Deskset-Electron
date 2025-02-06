@@ -4,18 +4,25 @@ const winDesktop = window.winDesktop
 
 
 const desktop = {
-  /* 组件 */
-  switchWidget: async (widgetId, isDisplay) => pageDesktop.postMessage({
-    'action': 'switchDisplay',
-    'id': widgetId,
-    'isDisplay': isDisplay
-  }),
+  /* === 组件 === */
   getWidgetOnDesktop: async (widgetId) => pageDesktop.postMessage({
     'action': 'getWidgetOnDesktop',
     'id': widgetId,
   }),
 
-  /* 主题 */
+  // 组件控制
+  switchDisplay: async (widgetId, isDisplay) => pageDesktop.postMessage({
+    'action': 'switchDisplay',
+    'id': widgetId,
+    'isDisplay': isDisplay
+  }),
+  switchDrag: async (widgetId, isDrag) => pageDesktop.postMessage({
+    'action': 'switchDrag',
+    'id': widgetId,
+    'isDrag': isDrag
+  }),
+
+  /* === 主题 === */
   saveTheme: async (themeName) => pageDesktop.postMessage({
     'action': 'saveTheme',
     'themeName': themeName
@@ -25,7 +32,7 @@ const desktop = {
     'themeName': themeName
   }),
 
-  /* 开发 */
+  /* === 开发 === */
   refresh: async () => pageDesktop.postMessage({ 'action': 'refreshPage' }),
   openDevTool: async () => winDesktop.openDevTool()
 }

@@ -6,25 +6,46 @@ import { widgets as rawWidgets } from '../src-components/widget_register'
 
 const widgets = shallowRef(rawWidgets)
 
-// 切换组件显示
-const switchWidgetDisplay = async (widgetId, isDisplay, style=undefined) => {
+// 设置组件
+// 注：仅当应用主题时使用 widgetStyle，因为拖动指令是直接操作 DOM，没有响应式绑定
+const setWidget = async ({widgetId, isDisplay=undefined, widgetClass=undefined, widgetStyle=undefined}) => {
   const num = widgets.value.findIndex(widget => widget.id == widgetId)
   if (num == -1) {
     throw Error(`没有 ${widgetId} 组件`)
   }
 
-  if (isDisplay) {
+  if (isDisplay == undefined && widgets.value[num].isDisplay == true) {
+    // 当组件打开时，改变组件属性
+    let widgetProps = new Set(widgets.value[num].class)
+
+    // 组件锁定
+    if (widgetClass == 'prop-lock') {
+      widgetProps.add('prop-lock')
+      widgetProps.delete('prop-unlock')
+    } else if (widgetClass == 'prop-unlock') {
+      widgetProps.add('prop-unlock')
+      widgetProps.delete('prop-lock')
+    }
+
+    widgets.value[num].class = Array.from(widgetProps)
+  } else if (isDisplay == true) {
+    // 打开组件
     widgets.value[num].isDisplay = true
 
-    // js 直接 object.attribute 添加新属性
     // 异步加载组件（注：widgets.value[num].content 也会改变 rawWidgets[num].content）
     widgets.value[num].contentLoad = defineAsyncComponent(widgets.value[num].content)
-    if (style != undefined)
-      widgets.value[num].style = style
-  } else {
+    if (widgetClass == undefined) {  // 传入 array，:class="['prop']" = :class="prop"
+      widgets.value[num].class = ['prop-unlock']
+    } else {
+      widgets.value[num].class = widgetClass
+    }
+    widgets.value[num].style = widgetStyle
+  } else if (isDisplay == false) {
+    // 关闭组件，并清空组件状态
     widgets.value[num].isDisplay = false
 
     widgets.value[num].contentLoad = undefined
+    widgets.value[num].class = undefined
     widgets.value[num].style = undefined
   }
 
@@ -37,7 +58,7 @@ const switchWidgetDisplay = async (widgetId, isDisplay, style=undefined) => {
 
 // 关闭所有组件，await Promise.all() 等待异步全部完成
 const closeAllWidgets = async () => {
-  await Promise.all(widgets.value.map((widget) => switchWidgetDisplay(widget.id, false)))
+  await Promise.all(widgets.value.map((widget) => setWidget({widgetId: widget.id, isDisplay: false})))
 }
 
 
@@ -60,6 +81,7 @@ const saveTheme = async (themeName) => {
     if (widgetHTML != null) {
       widgetStatus.push({
         id: widget.id,
+        class: Array.from(widgetHTML.classList),  // class 标注属性，方便改变组件行为
         style: widgetHTML.style.cssText  // 拖拽不会改变 widget.style
       })
     }
@@ -93,7 +115,7 @@ const useTheme = async (themeName) => {
   for (const widget of widgets) {
     const widgetId = widget?.id
     if (widgetId != undefined) {
-      await switchWidgetDisplay(widgetId, true, widget?.style)
+      await setWidget({widgetId: widgetId, isDisplay: true, widgetClass: widget?.class, widgetStyle: widget?.style})
     }
   }
 }
@@ -114,14 +136,7 @@ const bc = new BroadcastChannel("pageDesktop")
 const pageManager = new BroadcastChannel('pageManager')
 
 bc.onmessage = async (event) => {
-  /* 组件 */
-  if (event.data?.action == "switchDisplay") {
-    const id = event.data?.id
-    const isDisplay = event.data?.isDisplay
-    if (id != undefined && isDisplay != undefined) {
-      switchWidgetDisplay(id, isDisplay)
-    }
-  }
+  /* === 组件 === */
   if (event.data?.action == 'getWidgetOnDesktop') {
     const widgetId = event.data?.id
     const widgetHTML = document.getElementById(widgetId)
@@ -129,6 +144,7 @@ bc.onmessage = async (event) => {
       const widget = {
         'id': widgetId,
         'isDisplay': true,
+        'class': Array.from(widgetHTML.classList),
         'style': widgetHTML.style.cssText
       }
       pageManager.postMessage(widget)
@@ -136,13 +152,30 @@ bc.onmessage = async (event) => {
       const widget = {
         'id': widgetId,
         'isDisplay': false,
+        'class': [],
         'style': ''
       }
       pageManager.postMessage(widget)
     }
+  } else if (event.data?.action == 'switchDisplay') {
+    // 切换组件显示
+    const id = event.data.id
+    const isDisplay = event.data.isDisplay
+
+    setWidget({widgetId: id, isDisplay: isDisplay})
+  } else if (event.data?.action == 'switchDrag') {
+    // 锁定组件拖动
+    const id = event.data.id
+    const isDrag = event.data.isDrag
+
+    if (isDrag) {
+      setWidget({widgetId: id, widgetClass: 'prop-lock'})
+    } else {
+      setWidget({widgetId: id, widgetClass: 'prop-unlock'})
+    }
   }
 
-  /* 主题 */
+  /* === 主题 === */
   if (event.data?.action == "saveTheme") {
     saveTheme(event.data?.themeName)
   }
@@ -150,7 +183,7 @@ bc.onmessage = async (event) => {
     useTheme(event.data?.themeName)
   }
 
-  /* 开发 */
+  /* === 开发 === */
   if (event.data?.action == "refreshPage") {
     refreshPage()
   }
@@ -166,6 +199,7 @@ bc.onmessage = async (event) => {
       <Suspense>
         <div
           :id="widget.id"
+          :class="widget.class"
           :style="widget.style"
           v-if="widget.isDisplay"
           v-widget-drag

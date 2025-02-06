@@ -1,5 +1,10 @@
 function dragAndDrop(el) {
   return function down(event) {
+    // prop-lock 锁定拖动
+    if (el.classList.contains('prop-lock')) {
+      return
+    }
+
     let originX = el.offsetLeft
     let originY = el.offsetTop
     let beginX = event.clientX
