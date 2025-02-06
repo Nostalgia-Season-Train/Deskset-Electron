@@ -109,7 +109,7 @@ const triggerDisplay = (id, isDisplay) => {
 .preview {
   padding: 5px;
   pointer-events: none;
-  background-color: gray;
+  background-color: #9E9E9E;
   display: flex;
   justify-content: center;
   align-items: center;

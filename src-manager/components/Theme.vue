@@ -175,7 +175,7 @@ const deleteTheme = (themeName) => {
 .theme-container>.left :deep(.el-card) img {
   width: 240px;
   height: 135px;
-  background-color: gray;
+  background-color: #9E9E9E;
 }
 
 .theme-container>.right {
