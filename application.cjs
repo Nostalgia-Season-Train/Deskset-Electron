@@ -30,7 +30,7 @@ const createDesktop = () => {
   })
 
   if (DEBUG_MODE) {
-    win.loadURL('http://localhost:5173/desktop.html')
+    win.loadURL('http://127.0.0.1:5173/desktop.html')
   } else {
     win.loadFile('./dist/desktop.html')
   }
@@ -137,7 +137,7 @@ const createManager = () => {
   })
 
   if (DEBUG_MODE) {
-    win.loadURL('http://localhost:5173/manager.html')
+    win.loadURL('http://127.0.0.1:5173/manager.html')
   } else {
     win.loadFile('./dist/manager.html')
   }
