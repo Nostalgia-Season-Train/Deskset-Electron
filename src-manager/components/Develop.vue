@@ -15,19 +15,19 @@ const openDevTool = () => {
 
 /* === 配置 === */
 import { ref } from 'vue'
-import axios from 'axios'
+import { desksetReq } from '../request'
 
 const conf_vault = ref('')
 
 const get_conf_vault = async () => {
-  const rep = await axios.get('http://127.0.0.1:8000/v0/config/app-obsidian-vault')
+  const rep = await desksetReq.get('/v0/config/app-obsidian-vault')
   conf_vault.value = rep.data.data
 }
 get_conf_vault()
 
 const set_conf_vault = async () => {
-  const rep = await axios.post(
-    'http://127.0.0.1:8000/v0/config/app-obsidian-vault',
+  const rep = await desksetReq.post(
+    '/v0/config/app-obsidian-vault',
     { 'path': conf_vault.value }
   )
 

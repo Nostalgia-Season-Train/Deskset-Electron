@@ -1,14 +1,14 @@
 # 忽略临时文件
 tmp/
-Desktop-Tauri/
 
 # 忽略二进制文件
 *.dll
 *.zip
 *.otf
 
-# 忽略主题文件
-themes/
+# 忽略程序生成的文件
+/config
+/themes
 
 # Logs
 logs

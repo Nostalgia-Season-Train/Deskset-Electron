@@ -160,6 +160,36 @@ const appOpen = () => {
     path: './src-application/module_C/setBottom.dll'
   })
 
+  /* 身份认证 */
+  ipcMain.handle('server', async () => {
+    // 读取配置
+    const fs = require('fs').promises
+    const dataRaw = await fs.readFile('./config/deskset.json', 'utf8')
+    const config = JSON.parse(dataRaw)
+
+    const port = config['server-port']
+    const username = config.username
+    const password = config.password
+
+    // 获取 token
+    const { default: axios } = require('axios')
+    const formData = new FormData()
+    formData.append('username', username)
+    formData.append('password', password)
+
+    const repLogin = await axios.post('http://127.0.0.1:8000/v0/access/login', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    const token = repLogin.data.access_token
+
+    // 返回服务器
+    return {
+      port: port,
+      token: token
+    }
+  })
+
+  /* 组件：测试中，动态导入外部组件 */
   ipcMain.handle('getAllWidgets', async () => {
     const widgets = require('./src-application/widget_register.cjs')
     return widgets

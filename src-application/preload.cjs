@@ -15,6 +15,9 @@ const { contextBridge, webUtils } = require('electron')
 const { ipcRenderer, shell } = require('electron')
 
 contextBridge.exposeInMainWorld('electron', {
+  /* 服务器 */
+  server: () => ipcRenderer.invoke('server'),
+
   /* 文件绝对路径 */
   showFilePath: (file) => {
     const path = webUtils.getPathForFile(file)
