@@ -1,11 +1,11 @@
 <script setup>
 import { ref } from "vue"
-import axios from "axios"
+import { desksetReq } from '../request'
 
 const disks = ref()
 
 const disk = async () => {
-  const response_disk = await axios.get("http://127.0.0.1:8000/v0/device/disk")
+  const response_disk = await desksetReq.get("/v0/device/disk")
   disks.value = response_disk.data.data
 }
 disk()

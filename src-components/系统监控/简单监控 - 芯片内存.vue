@@ -32,7 +32,7 @@ const option = {
 
 
 import { ref } from "vue"
-import axios from "axios"
+import { desksetReq } from '../request'
 
 const cpu_percent = ref(0)
 const optionCPU = ref(structuredClone(option))
@@ -41,12 +41,12 @@ const memory_percent = ref(0)
 const optionRAM = ref(structuredClone(option))
 
 const device = async () => {
-  const response_cpu = await axios.get("http://127.0.0.1:8000/v0/device/cpu")
+  const response_cpu = await desksetReq.get("/v0/device/cpu")
   cpu_percent.value = response_cpu.data.data.percent
   optionCPU.value.series.data.shift()
   optionCPU.value.series.data.push(response_cpu.data.data.percent)
 
-  const response_memory = await axios.get("http://127.0.0.1:8000/v0/device/memory")
+  const response_memory = await desksetReq.get("/v0/device/memory")
   memory_percent.value = response_memory.data.data.percent
   optionRAM.value.series.data.shift()
   optionRAM.value.series.data.push(response_memory.data.data.percent)
