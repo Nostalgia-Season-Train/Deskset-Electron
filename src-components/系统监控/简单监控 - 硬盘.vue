@@ -34,11 +34,12 @@ useIntervalFn(disk, 60000)
 <style scoped>
 .disks {
   color: white;
+  margin-bottom: 10px;
 }
 
 .disks>.progress {
-  width: 240px;
-  height: 5px;
+  width: 280px;
+  height: 5.6px;
   background-image: linear-gradient(#FFF 0 0);
   background-color: rgba(128, 128, 128, 0.35);
   background-position-x: 0px;
