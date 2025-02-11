@@ -72,6 +72,10 @@ const createDesktop = () => {
     })
     let buffer = image.getBitmap()
 
+    // 关于透明穿透的一些问题：
+    // 1、阻止透明穿透 background-color: #FFFFFF01; 此时 buffer[3] = 1 且背景足以不可见
+    // 2、transparent 不一定全透明，换成 #FFFFFF00
+
     win.setIgnoreMouseEvents(!buffer[3])
   }
 

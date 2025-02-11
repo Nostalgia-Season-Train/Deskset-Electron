@@ -5,10 +5,8 @@ import axios from "axios"
 
 // 日记内容和日记动态
 import str内容 from "./日记组成/内容.vue"
-import str动态 from "./日记组成/动态.vue"
 
 const refstr内容 = ref()
-const refstr动态 = ref()
 
 
 // 前端：刷新显示 + 后端：打开日记
@@ -23,7 +21,6 @@ const refresh = async () => {
 
   // 刷新内容和动态显示
   refstr内容.value.refresh()
-  refstr动态.value.refresh()
 
   // 只有日记存在时，才显示内容动态
   if (open.data.success) {
@@ -82,7 +79,6 @@ const onfocus = () => {  // 单击输入框打开日历时，也得刷新日历
 
 <template>
 <div class="diary">
-  <el-button @dblclick="obsidian">双击在 Obsidian 中打开</el-button>
   <div class="select">
     <el-button @click="subOneDay">
       <el-icon size="16"><DArrowLeft /></el-icon>
@@ -93,6 +89,7 @@ const onfocus = () => {  // 单击输入框打开日历时，也得刷新日历
       @change="refresh()"
       @panel-change="refreshCalendar"
       @focus="onfocus"
+      popper-class="default deskset-datetimepicker"
     >
       <template #default="cell">
         <div class="cell">
@@ -105,10 +102,7 @@ const onfocus = () => {  // 单击输入框打开日历时，也得刷新日历
       <el-icon size="16"><DArrowRight /></el-icon>
     </el-button>
   </div>
-  <el-scrollbar height="75vh" v-show="isHideChild">
-    <str内容 ref="refstr内容"/>
-    <str动态 ref="refstr动态"/>
-  </el-scrollbar>
+    <str内容 ref="refstr内容" @dblclick="obsidian"/>
 </div>
 </template>
 
@@ -131,5 +125,18 @@ const onfocus = () => {  // 单击输入框打开日历时，也得刷新日历
 
   position: absolute;
   bottom: 0px; left: 50%; transform: translateX(-50%);
+}
+
+:deep(.el-button), :deep(.el-input__wrapper), :deep(.el-input__prefix), :deep(.el-input__inner) {
+  color: white;
+  background-color: #FFFFFF01;
+  border-style: none;
+  box-shadow: none;  /* 小一点的白色边框 */
+}
+
+:global(.default.deskset-datetimepicker .el-date-picker__header-label) {
+  /* 月份选择显示有误：0 ~ 11，暂时屏蔽 */
+  pointer-events: none;
+  user-select: none;
 }
 </style>
