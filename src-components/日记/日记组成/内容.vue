@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue"
-import axios from "axios"
+import { desksetReq } from '../../request'
 import { marked } from 'marked'
 
 // 禁用外部链接
@@ -13,7 +13,7 @@ render.link = (href) => {
 const content = ref()
 
 const refresh = async () => {
-  const response = await axios.get("http://127.0.0.1:8000/v0/diary/content")
+  const response = await desksetReq.get("/v0/obsidian/diary/content")
   const diary = response.data.data
   content.value.innerHTML = marked(diary?.content, { renderer: render })
 }

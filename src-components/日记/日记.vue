@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue"
-import axios from "axios"
+import { desksetReq } from '../request'
 
 
 // 日记内容和日记动态
@@ -17,7 +17,7 @@ const isHideChild = ref(false)
 
 const refresh = async () => {
   const stand_date = dayjs(date.value).format("YYYYMMDD")
-  const open = await axios.get(`http://127.0.0.1:8000/v0/diary/open/${ stand_date }`)
+  const open = await desksetReq.get(`/v0/obsidian/diary/open/${ stand_date }`)
 
   // 刷新内容和动态显示
   refstr内容.value.refresh()
@@ -36,7 +36,7 @@ refresh()
 import { DArrowLeft, DArrowRight } from "@element-plus/icons-vue"
 
 const obsidian = async () => {
-  await axios.get("http://127.0.0.1:8000/v0/diary/open-in-obsidian")
+  await desksetReq.get("/v0/obsidian/diary/open-in-obsidian")
 }
 
 const subOneDay = () => {
@@ -63,7 +63,7 @@ const isDiaryExist = ({ dayjs }) => {
 
 const refreshCalendar = async (value) => {
   const yearmonth = dayjs(value).format("YYYYMM")
-  const response = await axios.get(`http://127.0.0.1:8000/v0/diary/list-a-month/${ yearmonth }`)
+  const response = await desksetReq.get(`/v0/obsidian/diary/list-a-month/${ yearmonth }`)
   let diaryList = []
   for (const diary of response.data.data) {
     diaryList.push(diary?.date)
