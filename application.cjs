@@ -162,7 +162,8 @@ const createManager = () => {
 const appOpen = () => {
   open({
     library: 'setBottom.dll',
-    path: './src-application/module_C/setBottom.dll'
+    // path: './src-application/module_C/setBottom.dll'  // 这是打包前的
+    path: './setBottom.dll'  // 这是打包后的，需要手动复制
   })
 
   /* 身份认证 */
