@@ -16,7 +16,8 @@ export default defineConfig({
         desktop: path.resolve(__dirname, 'desktop.html'),
         manager: path.resolve(__dirname, 'manager.html')
       }
-    }
+    },
+    target: 'es2022'  // 支持顶级 await 的环境，否则 const server = await window.electron.server() 会报错
   },
   plugins: [
     vue(),

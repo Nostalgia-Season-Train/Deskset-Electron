@@ -7,7 +7,7 @@ const { DataType, open, close, define } = require('ffi-rs')
 // === 调试模式 ===
 // - 1、加载 Vite 服务器页面，而不是构建的文件
 // - 2、显示主菜单 Menu 方便刷新页面
-const DEBUG_MODE = true
+const DEBUG_MODE = false
 
 
 // === Desktop 窗口 ===
@@ -39,6 +39,7 @@ const createDesktop = () => {
   ipcMain.on('openDevTool', () => {
     win.webContents.openDevTools({ mode: 'detach' })
   })
+  win.removeMenu()  // 去掉 Menu 可以避免 Ctrl + Shift + I 意外在桌面窗口中打开 DevTools
 
   // 窗口置底
   const handleBuffer = win.getNativeWindowHandle()
