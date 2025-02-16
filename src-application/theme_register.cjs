@@ -6,7 +6,8 @@
 
 const THEME_LIB = './themes'      // 程序用路径，对应 electron.exe 同级目录
 // const THEME_LIB_VITE = '/themes'  // 网页用路径，对应 vite.config.js 同级目录
-const THEME_LIB_VITE = '../themes'  // 构建出的网页所用路径，对应 dist 同级目录
+// const THEME_LIB_VITE = '../themes'  // 构建出的网页所用路径，对应 dist 同级目录
+const THEME_LIB_VITE = '../../../themes'  // 打包后的路径...相对于 resources/app.asar/dist
 
 /* === 函数 === */
 const fs = require('fs').promises
