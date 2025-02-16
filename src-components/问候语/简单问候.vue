@@ -1,11 +1,11 @@
 <script setup>
 import { ref } from "vue"
-import axios from "axios"
+import { desksetReq } from '../request'
 
 const greeting = ref("简单问候")
 
 const greet = async () => {
-  const response = await axios.get("http://127.0.0.1:8000/v0/greet/simple")
+  const response = await desksetReq.get('/v0/greet/simple')
   greeting.value = response.data.data.greeting
 }
 greet()
