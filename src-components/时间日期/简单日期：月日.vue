@@ -1,12 +1,12 @@
 <script setup>
 import { ref } from "vue"
-import axios from "axios"
+import { desksetReq } from '../request'
 
 const month = ref("12")
 const day   = ref("24")
 
 const date = async () => {
-  const response_date = await axios.get("http://127.0.0.1:8000/v0/datetime/date")
+  const response_date = await desksetReq.get('/v0/datetime/date')
   month.value = response_date.data.data.month
   day.value = response_date.data.data.day
 }
@@ -15,7 +15,7 @@ date()
 
 import { useIntervalFn } from '@vueuse/core'
 
-useIntervalFn(date, 60000)
+useIntervalFn(date, 1000)
 </script>
 
 

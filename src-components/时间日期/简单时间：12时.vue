@@ -1,13 +1,13 @@
 <script setup>
 import { ref } from "vue"
-import axios from "axios"
+import { desksetReq } from '../request'
 
 const hour   = ref("00")
 const minute = ref("00")
 const ampm   = ref("am")
 
 const time = async () => {
-  const response = await axios.get("http://127.0.0.1:8000/v0/datetime/time12")
+  const response = await desksetReq.get('/v0/datetime/time12')
   hour.value = response.data.data.hour
   minute.value = response.data.data.minute
   ampm.value = response.data.data.ampm
@@ -17,7 +17,7 @@ time()
 
 import { useIntervalFn } from "@vueuse/core"
 
-useIntervalFn(time, 1000)
+useIntervalFn(time, 250)
 </script>
 
 

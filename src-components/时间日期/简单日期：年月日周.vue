@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue"
-import axios from "axios"
+import { desksetReq } from '../request'
 
 const year  = ref("2024")
 const month = ref("12")
@@ -8,12 +8,12 @@ const day   = ref("24")
 const week  = ref("星期天")
 
 const date = async () => {
-  const response_date = await axios.get("http://127.0.0.1:8000/v0/datetime/date")
+  const response_date = await desksetReq.get('/v0/datetime/date')
   year.value = response_date.data.data.year
   month.value = response_date.data.data.month
   day.value = response_date.data.data.day
 
-  const response_week = await axios.get("http://127.0.0.1:8000/v0/datetime/week")
+  const response_week = await desksetReq.get('/v0/datetime/week')
   week.value = response_week.data.data.week
 }
 date()
@@ -21,7 +21,7 @@ date()
 
 import { useIntervalFn } from '@vueuse/core'
 
-useIntervalFn(date, 60000)
+useIntervalFn(date, 1000)
 </script>
 
 
