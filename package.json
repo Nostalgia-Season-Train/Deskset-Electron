@@ -16,7 +16,11 @@
     "make": "electron-forge make"
   },
   "dependencies": {
+    "axios": "^1.7.8",
     "ffi-rs": "^1.2.1",
+    "glob": "^11.0.1"
+  },
+  "devDependencies": {
     "@vueuse/core": "^12.0.0",
     "axios": "^1.7.8",
     "dayjs": "^1.11.13",
@@ -27,9 +31,7 @@
     "pinia": "^2.3.0",
     "vue": "^3.5.12",
     "vue-echarts": "^7.0.3",
-    "vue-router": "^4.5.0"
-  },
-  "devDependencies": {
+    "vue-router": "^4.5.0",
     "@electron-forge/cli": "^7.6.1",
     "@electron-forge/maker-deb": "^7.6.1",
     "@electron-forge/maker-rpm": "^7.6.1",
