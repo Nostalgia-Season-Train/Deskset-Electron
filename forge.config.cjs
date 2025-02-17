@@ -9,7 +9,11 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        // 减小打包体积：ignore 配置没用，复制以下文件、文件夹到其他目录打包
+        // - 代码项：application.cjs、/src-application、/dist
+        // - 构建项：package.json、forge.config.cjs、/node_modules
+      },
     },
     {
       name: '@electron-forge/maker-zip',
