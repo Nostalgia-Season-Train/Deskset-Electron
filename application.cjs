@@ -183,10 +183,15 @@ const appOpen = () => {
     formData.append('username', username)
     formData.append('password', password)
 
-    const repLogin = await axios.post(`http://127.0.0.1:${port}/v0/access/login`, formData, {
+    let token = undefined
+    try {
+      const repLogin = await axios.post(`http://127.0.0.1:${port}/v0/access/login`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
-    })
-    const token = repLogin.data.access_token
+      })
+      token = repLogin.data.access_token
+    } catch {
+      // - [ ] 添加日志
+    }
 
     // 返回服务器
     return {
