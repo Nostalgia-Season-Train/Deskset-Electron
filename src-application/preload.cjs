@@ -18,10 +18,15 @@ contextBridge.exposeInMainWorld('electron', {
   /* 服务器 */
   server: () => ipcRenderer.invoke('server'),
 
-  /* 文件绝对路径 */
-  showFilePath: (file) => {
-    const path = webUtils.getPathForFile(file)
-    console.log(`拖拽文件路径：${path}`)
+  /* 组件：返回文件 = 路径 + 图标 */
+  retFile: async (file) => {
+    const filePath = webUtils.getPathForFile(file)
+    const fileIcon = await ipcRenderer.invoke('retFileIcon', filePath)
+
+    return {
+      path: filePath,
+      icon: fileIcon
+    }
   },
 
   /* 打开外部浏览器 */

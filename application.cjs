@@ -217,6 +217,11 @@ const appOpen = () => {
     deleteTheme(themeName)
   })
 
+  /* 组件：以 Base64 编码返回文件图标 */
+  ipcMain.handle('retFileIcon', async (event, filePath) => {
+    return (await app.getFileIcon(filePath, { size: 'normal' })).toDataURL()
+  })
+
   createDesktop()
   createManager()
 }
