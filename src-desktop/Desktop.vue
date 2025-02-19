@@ -56,6 +56,29 @@ const setWidget = async ({widgetId, isDisplay=undefined, widgetClass=undefined, 
   return new Promise((resolve) => { resolve() })  // 中括号包裹函数保持行为一致
 }
 
+// 切换组件属性（仅限打开的组件）
+const switchWidgetProp = async (id, prop, is) => {
+  const num = widgets.value.findIndex(widget => widget.id == id)
+  if (num == -1) {
+    throw Error(`没有 ${id} 组件`)
+  }
+
+  // is = true 添加 prop；is = false 移除 prop
+  if (widgets.value[num].isDisplay == true) {
+    let widgetProps = new Set(widgets.value[num].class)
+
+    if (is == true) {
+      widgetProps.add(prop)
+    } else {
+      widgetProps.delete(prop)
+    }
+
+    widgets.value[num].class = Array.from(widgetProps)
+  }
+
+  triggerRef(widgets)
+}
+
 // 关闭所有组件，await Promise.all() 等待异步全部完成
 const closeAllWidgets = async () => {
   await Promise.all(widgets.value.map((widget) => setWidget({widgetId: widget.id, isDisplay: false})))
@@ -173,6 +196,9 @@ bc.onmessage = async (event) => {
     } else {
       setWidget({widgetId: id, widgetClass: 'prop-unlock'})
     }
+  } else if (event.data?.action == 'switchProp') {
+    // 切换组件属性
+    switchWidgetProp(event.data.id, event.data.prop, event.data.is)
   }
 
   /* === 主题 === */
@@ -234,5 +260,25 @@ body {
 
   display: flex; flex-direction: column;
   align-items: center;
+}
+
+/* 禁用交互，除了包裹组件的 div */
+.disable-interaction * {
+  /* ' *' 是最优解，对于绑定在 body 上的 el-date-picker 也起作用 */
+  pointer-events: none;
+}
+
+/* 自动隐藏，鼠标移入时显示 */
+.auto-hide {
+  background-color: #FFFFFF01;
+}
+.auto-hide>* {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.auto-hide:hover>* {
+  opacity: 1;
+  visibility: visible;
 }
 </style>

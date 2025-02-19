@@ -21,6 +21,9 @@ const desktop = {
     'id': widgetId,
     'isDrag': isDrag
   }),
+  switchProp: async (id, prop, is) => pageDesktop.postMessage({
+    action: 'switchProp', id: id, prop: prop, is: is
+  }),
 
   /* === 主题 === */
   saveTheme: async (themeName) => pageDesktop.postMessage({

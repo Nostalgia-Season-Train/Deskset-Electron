@@ -20,6 +20,16 @@ const handleSelect = (key, keyPath) => {
   desktop.getWidgetOnDesktop(id)
 }
 
+// 组件属性：按照 is 添加/移除属性 prop
+const widgetProps = shallowRef([
+  {name: '禁用交互', prop: 'disable-interaction'},
+  {name: '自动隐藏', prop: 'auto-hide'}
+])
+const widgetPropsIs = ref(Array(widgetProps.value.length).fill(false))  // 属性是否开启
+
+const triggerProp = (id, prop, is) => {
+  desktop.switchProp(id, prop, is)
+}
 
 // 组件信息显示
 import { onBeforeUnmount } from 'vue'
@@ -32,6 +42,14 @@ pageManager.onmessage = async (event) => {
     value锁定.value = true
   } else {
     value锁定.value = false
+  }
+
+  for (const [num, widgetProp] of widgetProps.value.entries()) {
+    if (event.data.class.includes(widgetProp.prop)) {
+      widgetPropsIs.value[num] = true
+    } else {
+      widgetPropsIs.value[num] = false
+    }
   }
 }
 onBeforeUnmount(() => { pageManager.onmessage = null })  // 解除绑定，否则重进页面后 onmessage 会执行两次以上
@@ -47,6 +65,9 @@ const value显示 = ref(false)
 const triggerDisplay = (id) => {
   desktop.switchDisplay(id, value显示.value)
   setTimeout(() => desktop.switchDrag(id, value锁定.value), 100)  // 加入延时，确保打开后再锁定
+  for (const [num, widgetProp] of widgetProps.value.entries()) {
+    setTimeout(() => triggerProp(id, widgetProp.prop, widgetPropsIs.value[num]), 100)
+  }
 }
 
 // 是否锁定
@@ -99,6 +120,13 @@ const triggerDrag = (id) => {
         <el-switch
           v-model="value锁定"
           @click="triggerDrag(widgetNow.id)"
+        />
+      </div>
+      <div v-for="(widgetProp, num) in widgetProps" class="option">
+        <div>{{ widgetProp.name }}</div>
+        <el-switch
+          v-model="widgetPropsIs[num]"
+          @click="triggerProp(widgetNow.id, widgetProp.prop, widgetPropsIs[num])"
         />
       </div>
     </el-scrollbar>
