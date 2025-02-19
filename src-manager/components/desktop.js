@@ -16,11 +16,6 @@ const desktop = {
     'id': widgetId,
     'isDisplay': isDisplay
   }),
-  switchDrag: async (widgetId, isDrag) => pageDesktop.postMessage({
-    'action': 'switchDrag',
-    'id': widgetId,
-    'isDrag': isDrag
-  }),
   switchProp: async (id, prop, is) => pageDesktop.postMessage({
     action: 'switchProp', id: id, prop: prop, is: is
   }),

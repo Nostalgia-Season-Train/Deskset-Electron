@@ -14,29 +14,13 @@ const setWidget = async ({widgetId, isDisplay=undefined, widgetClass=undefined, 
     throw Error(`没有 ${widgetId} 组件`)
   }
 
-  if (isDisplay == undefined && widgets.value[num].isDisplay == true) {
-    // 当组件打开时，改变组件属性
-    let widgetProps = new Set(widgets.value[num].class)
-
-    // 组件锁定
-    if (widgetClass == 'prop-lock') {
-      widgetProps.add('prop-lock')
-      widgetProps.delete('prop-unlock')
-    } else if (widgetClass == 'prop-unlock') {
-      widgetProps.add('prop-unlock')
-      widgetProps.delete('prop-lock')
-    }
-
-    widgets.value[num].class = Array.from(widgetProps)
-  } else if (isDisplay == true) {
+  if (isDisplay == true) {
     // 打开组件
     widgets.value[num].isDisplay = true
 
     // 异步加载组件（注：widgets.value[num].content 也会改变 rawWidgets[num].content）
     widgets.value[num].contentLoad = defineAsyncComponent(widgets.value[num].content)
-    if (widgetClass == undefined) {  // 传入 array，:class="['prop']" = :class="prop"
-      widgets.value[num].class = ['prop-unlock']
-    } else {
+    if (widgetClass != undefined) {  // 传入 array，:class="['prop']" = :class="prop"
       widgets.value[num].class = widgetClass
     }
     widgets.value[num].style = widgetStyle
@@ -186,16 +170,6 @@ bc.onmessage = async (event) => {
     const isDisplay = event.data.isDisplay
 
     setWidget({widgetId: id, isDisplay: isDisplay})
-  } else if (event.data?.action == 'switchDrag') {
-    // 锁定组件拖动
-    const id = event.data.id
-    const isDrag = event.data.isDrag
-
-    if (isDrag) {
-      setWidget({widgetId: id, widgetClass: 'prop-lock'})
-    } else {
-      setWidget({widgetId: id, widgetClass: 'prop-unlock'})
-    }
   } else if (event.data?.action == 'switchProp') {
     // 切换组件属性
     switchWidgetProp(event.data.id, event.data.prop, event.data.is)

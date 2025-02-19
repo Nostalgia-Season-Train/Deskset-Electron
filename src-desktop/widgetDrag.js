@@ -1,7 +1,7 @@
 function dragAndDrop(el) {
   return function down(event) {
-    // prop-lock 锁定拖动
-    if (el.classList.contains('prop-lock')) {
+    // drag-lock 锁定拖动
+    if (el.classList.contains('drag-lock')) {
       return
     }
 

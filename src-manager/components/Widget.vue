@@ -22,6 +22,7 @@ const handleSelect = (key, keyPath) => {
 
 // 组件属性：按照 is 添加/移除属性 prop
 const widgetProps = shallowRef([
+  {name: '锁定拖动', prop: 'drag-lock'},
   {name: '禁用交互', prop: 'disable-interaction'},
   {name: '自动隐藏', prop: 'auto-hide'}
 ])
@@ -38,12 +39,6 @@ const pageManager = new BroadcastChannel('pageManager')
 
 pageManager.onmessage = async (event) => {
   value显示.value = event.data.isDisplay
-  if (event.data.class.includes('prop-lock')) {
-    value锁定.value = true
-  } else {
-    value锁定.value = false
-  }
-
   for (const [num, widgetProp] of widgetProps.value.entries()) {
     if (event.data.class.includes(widgetProp.prop)) {
       widgetPropsIs.value[num] = true
@@ -64,16 +59,9 @@ import desktop from './desktop'
 const value显示 = ref(false)
 const triggerDisplay = (id) => {
   desktop.switchDisplay(id, value显示.value)
-  setTimeout(() => desktop.switchDrag(id, value锁定.value), 100)  // 加入延时，确保打开后再锁定
   for (const [num, widgetProp] of widgetProps.value.entries()) {
-    setTimeout(() => triggerProp(id, widgetProp.prop, widgetPropsIs.value[num]), 100)
+    setTimeout(() => triggerProp(id, widgetProp.prop, widgetPropsIs.value[num]), 100)  // 加入延时，确保打开后再应用属性
   }
-}
-
-// 是否锁定
-const value锁定 = ref(false)
-const triggerDrag = (id) => {
-  desktop.switchDrag(id, value锁定.value)
 }
 </script>
 
@@ -113,13 +101,6 @@ const triggerDrag = (id) => {
         <el-switch
           v-model="value显示"
           @click="triggerDisplay(widgetNow.id)"
-        />
-      </div>
-      <div class="option">
-        <div>锁定拖动</div>
-        <el-switch
-          v-model="value锁定"
-          @click="triggerDrag(widgetNow.id)"
         />
       </div>
       <div v-for="(widgetProp, num) in widgetProps" class="option">
