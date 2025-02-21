@@ -159,6 +159,10 @@ const createManager = () => {
 
 
 // === 应用 App 打开关闭 ===
+// 启动数字桌搭后端
+const { spawn } = require('child_process')
+const back = spawn('./Deskset-Back.exe')
+
 const appOpen = () => {
   open({
     library: 'setBottom.dll',
@@ -168,23 +172,25 @@ const appOpen = () => {
 
   /* 身份认证 */
   ipcMain.handle('server', async () => {
-    // 读取配置
-    const fs = require('fs').promises
-    const dataRaw = await fs.readFile('./config/deskset.json', 'utf8')
-    const config = JSON.parse(dataRaw)
-
-    const port = config['server-port']
-    const username = config.username
-    const password = config.password
-
-    // 获取 token
-    const { default: axios } = require('axios')
-    const formData = new FormData()
-    formData.append('username', username)
-    formData.append('password', password)
-
+    let port = 6527
     let token = undefined
+
     try {
+      // 读取配置
+      const fs = require('fs').promises
+      const dataRaw = await fs.readFile('./config/deskset.json', 'utf8')
+      const config = JSON.parse(dataRaw)
+
+      port = config['server-port']
+      const username = config.username
+      const password = config.password
+
+      // 获取 token
+      const { default: axios } = require('axios')
+      const formData = new FormData()
+      formData.append('username', username)
+      formData.append('password', password)
+
       const repLogin = await axios.post(`http://127.0.0.1:${port}/v0/access/login`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
@@ -230,6 +236,7 @@ const appClose = () => {
   close('setBottom.dll')
 
   app.quit()
+  back.kill()
 }
 
 app.whenReady().then(() => {

@@ -10,6 +10,16 @@ tmp/
 /config
 /themes
 
+# 忽略后端及相关文件
+/api
+/config
+/i18n
+/log
+/runtime
+/site-packages
+Deskset-Back.exe
+Deskset-Back.py
+
 # Logs
 logs
 *.log
