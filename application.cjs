@@ -241,7 +241,7 @@ const appClose = () => {
 }
 
 app.whenReady().then(() => {
-  appOpen()
+  setTimeout(appOpen, 1000)  // 先启动后端服务
 })
 
 app.on('window-all-closed', () => {
