@@ -8,12 +8,9 @@
   "main": "application.cjs",
   "scripts": {
     "dev-Vite": "vite",
-    "dev-Electron": "electron .",
+    "dev-Electron": "electron . -debug",
     "build-Vite": "vite build",
-    "build-Electron": "electron-forge make",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "build-Electron": "electron-forge make"
   },
   "dependencies": {
     "axios": "^1.7.8",

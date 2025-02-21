@@ -7,7 +7,8 @@ const { DataType, open, close, define } = require('ffi-rs')
 // === 调试模式 ===
 // - 1、加载 Vite 服务器页面，而不是构建的文件
 // - 2、显示主菜单 Menu 方便刷新页面
-const DEBUG_MODE = false
+const args = process.argv.slice(2)
+const DEBUG_MODE = args.includes('-debug') || false
 
 
 // === Desktop 窗口 ===
@@ -161,7 +162,7 @@ const createManager = () => {
 // === 应用 App 打开关闭 ===
 // 启动数字桌搭后端
 const { spawn } = require('child_process')
-const back = spawn('./Deskset-Back.exe')
+const back = !DEBUG_MODE ? spawn('./Deskset-Back.exe') : spawn('./Deskset-Back.exe', ['-dev'])
 
 const appOpen = () => {
   open({
