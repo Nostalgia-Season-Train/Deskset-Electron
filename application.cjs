@@ -162,7 +162,7 @@ const createManager = () => {
 // === 应用 App 打开关闭 ===
 // 启动数字桌搭后端
 const { spawn } = require('child_process')
-const back = !DEBUG_MODE ? spawn('./Deskset-Back.exe') : spawn('./Deskset-Back.exe', ['-dev'])
+const back = !DEBUG_MODE ? spawn('./Deskset-Back.exe') : undefined
 
 const appOpen = () => {
   open({
@@ -237,7 +237,9 @@ const appClose = () => {
   close('setBottom.dll')
 
   app.quit()
-  back.kill()
+  if (back != undefined) {
+    back.kill()
+  }
 }
 
 app.whenReady().then(() => {
