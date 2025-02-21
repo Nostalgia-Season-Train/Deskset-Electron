@@ -57,7 +57,7 @@ const selectIndexSub = async () => {
       @keydown.down="selectIndexAdd"
       @keydown.up="selectIndexSub"
     />
-    <el-scrollbar height="32vh">
+    <el-scrollbar max-height="32vh">
     <div v-for="(suggest, index) in suggests"
       @click="choose_by_click(suggest)"
       @mouseenter="selectIndex = index"

@@ -20,10 +20,12 @@ contextBridge.exposeInMainWorld('electron', {
 
   /* 组件：返回文件 = 路径 + 图标 */
   retFile: async (file) => {
+    const fileName = file.name.replace(/\.[^.]+$/, '')
     const filePath = webUtils.getPathForFile(file)
     const fileIcon = await ipcRenderer.invoke('retFileIcon', filePath)
 
     return {
+      name: fileName,
       path: filePath,
       icon: fileIcon
     }
