@@ -11,6 +11,7 @@ tmp/
 /themes
 auto-imports.d.ts
 components.d.ts
+/pre-build
 
 # 忽略后端及相关文件
 /api
