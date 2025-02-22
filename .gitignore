@@ -9,6 +9,8 @@ tmp/
 # 忽略程序生成的文件
 /config
 /themes
+auto-imports.d.ts
+components.d.ts
 
 # 忽略后端及相关文件
 /api
