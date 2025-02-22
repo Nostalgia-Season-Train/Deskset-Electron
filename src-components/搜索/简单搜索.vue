@@ -75,8 +75,6 @@ const selectIndexSub = async () => {
 :deep(.el-input__inner) {
   display: flex;
   align-items: center;
-  /* 上面偶尔生效，直接文字抬高 0.25px */
-  padding-bottom: 0.25px;
 }
 
 /* 搜索建议（自动填充）*/

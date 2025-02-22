@@ -6,8 +6,6 @@ import 'element-plus/dist/index.css'
 
 import Manager from './Manager.vue'
 
-import '../static/fonts/DefaultFont.css'
-
 
 // 动态路由
 import { createMemoryHistory, createRouter } from 'vue-router'
