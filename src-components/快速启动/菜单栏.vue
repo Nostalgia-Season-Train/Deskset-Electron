@@ -84,4 +84,18 @@ img {
 .dock-item:hover+ .dock-item {
   --s: 1.25;
 }
+
+/* 修复 auto-hide 自动隐藏后不显示 */
+/* absolute 下 dock 不会撑开外层 div，隐藏后鼠标直接透明穿透 */
+:global(#快速启动\/菜单栏>*) {
+  opacity: 1;
+  visibility: visible;
+}
+.auto-hide .dock {  /* 特殊类名加上 deskset 前缀 */
+  opacity: 0.01;  /* 效果等同于 #FFFFFF01 */
+  transition: opacity 0.3s ease;  /* 建议改成全局变量 */
+}
+.auto-hide:hover .dock {
+  opacity: 1;
+}
 </style>
