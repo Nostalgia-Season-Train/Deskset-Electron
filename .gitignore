@@ -5,6 +5,7 @@ tmp/
 *.dll
 *.zip
 *.otf
+*.ttf
 
 # 忽略程序生成的文件
 /config
