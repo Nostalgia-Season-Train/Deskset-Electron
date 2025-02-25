@@ -39,6 +39,11 @@ void send0x52C() {
 int main(int handleElectron, int howToKeepOnDesktop) {
   HWND hElectron = (HWND)(uintptr_t)handleElectron;
 
+  // win32 实现透明穿透，不用 checkTransInterval 轮询检查透明度
+    // 暂时不用，有时候会使 Electron 窗口消失
+    // SetLayeredWindowAttributes(hwnd, 0, 255, LWA_ALPHA) 好像能解决这个问题
+  // SetWindowLongPtrW(hElectron, GWL_STYLE, GetWindowLongPtrW(hElectron, GWL_STYLE) | WS_EX_TRANSPARENT);
+
   // 第一步：发送 0x52C 指令
   send0x52C();
 
