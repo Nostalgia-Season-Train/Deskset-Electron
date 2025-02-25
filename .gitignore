@@ -2,6 +2,7 @@
 tmp/
 
 # 忽略二进制文件
+*.exe
 *.dll
 *.zip
 *.otf
