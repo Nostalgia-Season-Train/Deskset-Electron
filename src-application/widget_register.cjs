@@ -1,7 +1,7 @@
 // === 检索组件目录，返回组件列表 ===
 const glob = require('glob')
 
-const components = glob.sync('*/*.vue', { cwd: './components' })
+const components = glob.sync('*/*.js', { cwd: './components' })
 
 
 // === 遍历组件列表，生成组件信息 ===
@@ -13,7 +13,7 @@ let number = 0
 
 for (const filePath of components) {
   const category = path.dirname(filePath)
-  const name     = path.basename(filePath, '.vue')
+  const name     = path.basename(filePath, '.js')
   const id = category + '/' + name
 
   if (!categorys.has(category)) {
@@ -25,7 +25,9 @@ for (const filePath of components) {
     num: number,  // 组件次序，提供临时数字索引
     id:       id,
     category: category,
-    name:     name
+    name:     name,
+    relpath: `../../components/${ id }.js`,  // file 协议 import(relpath)，构建后相对于 dist/assets
+    isDisplay: false
   })
 
   number++

@@ -9,6 +9,7 @@
   "scripts": {
     "dev-Vite": "vite",
     "dev-Electron": "electron . -debug",
+    "dev-ElectronDist": "vite build && electron .",
     "build-Vite": "vite build",
     "build-Electron": "electron-forge make"
   },

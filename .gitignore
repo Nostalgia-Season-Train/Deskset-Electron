@@ -1,6 +1,9 @@
 # 忽略临时文件
 tmp/
 
+# 忽略组件
+/components
+
 # 忽略二进制文件
 *.exe
 *.dll

@@ -1,7 +1,7 @@
 <script setup>
 // 组件预览：计算 id，找到相关组件并预览
 import { shallowRef, defineAsyncComponent } from "vue"
-import { widgets, categorys, number } from "../../src-components/widget_register"
+import { widgets, categorys, number } from "../widget_register"
 
 const widgetNow = shallowRef(widgets[0])
 const widgetPreview = shallowRef(defineAsyncComponent(widgets[0].content))
