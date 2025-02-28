@@ -1,0 +1,35 @@
+name: Electron Auto Build
+
+
+on:
+  push:
+    # 后面改成标签推送触发打包
+    # tags:
+    #   - 'v*.*.*'
+
+
+jobs:
+  release:
+    name: Build and Release
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [windows-latest]
+
+    # 第一步：检出（下载）仓库
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # 第二步：安装 NodeJS
+    steps:
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+
+    # 第三步：运行预构建脚本
+    steps:
+      - name: Pre Build
+        run: |
+          ./pre-build.bat
