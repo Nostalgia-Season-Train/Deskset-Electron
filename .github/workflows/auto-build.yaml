@@ -27,7 +27,14 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v4
 
-    # 第三步：运行预构建脚本
-    - name: Pre Build
+    # 第三步：下载依赖
+    - name: Install Dependencies
       run: |
-        ./pre-build.bat
+        npm install
+
+    # 第四步：构建 Electron
+    - name: Build
+      run: |
+        gcc -fPIC -shared "./module-bin/main.c" -o "./pre-build/setBottom.dll"
+        npm run build-Vite
+        npm run build-Electron
