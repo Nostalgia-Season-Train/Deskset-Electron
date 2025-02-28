@@ -3,7 +3,7 @@ const component = await electron.getAllWidgets()
 
 let widgetList = component.widgets
 for (const widget of widgetList) {
-  widget.content = () => import(widget.relpath)
+  widget.content = () => import(/* @vite-ignore */widget.relpath)
 }
 
 

@@ -1,7 +1,15 @@
+// === 常量 ===
+const args = process.argv.slice(2)
+const DEVELOP_ENV = args.includes('-debug') || false
+
+const WIDGET_EXTN = DEVELOP_ENV ? 'vue' : 'js'  // 组件后缀
+const WIDGET_DIR = DEVELOP_ENV ? './src-components' : './components'  // 存放组件的目录
+
+
 // === 检索组件目录，返回组件列表 ===
 const glob = require('glob')
 
-const components = glob.sync('*/*.js', { cwd: './components' })
+const components = glob.sync(`*/*.${ WIDGET_EXTN }`, { cwd: `./${ WIDGET_DIR }` })
 
 
 // === 遍历组件列表，生成组件信息 ===
@@ -13,7 +21,7 @@ let number = 0
 
 for (const filePath of components) {
   const category = path.dirname(filePath)
-  const name     = path.basename(filePath, '.js')
+  const name     = path.basename(filePath, `.${ WIDGET_EXTN }`)
   const id = category + '/' + name
 
   if (!categorys.has(category)) {
@@ -26,7 +34,7 @@ for (const filePath of components) {
     id:       id,
     category: category,
     name:     name,
-    relpath: `../../components/${ id }.js`,  // file 协议 import(relpath)，构建后相对于 dist/assets
+    relpath: `../../${ WIDGET_DIR }/${ id }.${ WIDGET_EXTN }`,  // file 协议 import(relpath)，构建后相对于 dist/assets
     isDisplay: false
   })
 
