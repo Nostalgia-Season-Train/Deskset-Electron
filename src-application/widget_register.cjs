@@ -9,7 +9,10 @@ const WIDGET_DIR = DEVELOP_ENV ? './src-components' : './components'  // 存放�
 // === 检索组件目录，返回组件列表 ===
 const glob = require('glob')
 
-const components = glob.sync(`*/*.${ WIDGET_EXTN }`, { cwd: `./${ WIDGET_DIR }` })
+const rawComponents = glob.sync(`*/*.${ WIDGET_EXTN }`, { cwd: `./${ WIDGET_DIR }` })
+
+// 按中文排序
+const components = rawComponents.sort((a, b) => a.localeCompare(b, 'zh-CN'))
 
 
 // === 遍历组件列表，生成组件信息 ===
