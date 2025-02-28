@@ -4,16 +4,32 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 module.exports = {
   packagerConfig: {
     asar: true,
+    ignore: [
+      // === 打包时要忽略的路径 ===
+      // 代码
+      '/src-components',
+      '/src-desktop',
+      '/src-manager',
+      '/module-bin',
+      // 静态资源
+      '/static/fonts',  // vite 编译时已经打包字体到 dist 中，不用重复引入
+      // 外部文件（包括后端生成或需要的文件）
+      '/config', '/log',                 // 配置、日志
+      '/api', '/components', '/themes',  // 接口、组件、主题
+      '/i18n',                           // 翻译
+      // 后端及其依赖
+      '/runtime',
+      '/site-packages',
+      'Deskset-Back.exe',
+      'Deskset-Back.py',
+      // 临时文件
+      '/tmp'
+    ]
   },
   rebuildConfig: {},
   makers: [
     {
-      name: '@electron-forge/maker-squirrel',
-      config: {
-        // 减小打包体积：ignore 配置没用，复制以下文件、文件夹到其他目录打包
-        // - 代码项：application.cjs、/src-application、/dist
-        // - 构建项：package.json、forge.config.cjs、/node_modules
-      },
+      name: '@electron-forge/maker-squirrel'
     },
     {
       name: '@electron-forge/maker-zip',
