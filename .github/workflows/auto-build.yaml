@@ -18,18 +18,16 @@ jobs:
       matrix:
         os: [windows-latest]
 
-    # 第一步：检出（下载）仓库
     steps:
+    # 第一步：检出（下载）仓库
     - name: Checkout Repository
       uses: actions/checkout@v4
 
     # 第二步：安装 NodeJS
-    steps:
     - name: Install Node.js
       uses: actions/setup-node@v4
 
     # 第三步：运行预构建脚本
-    steps:
-      - name: Pre Build
-        run: |
-          ./pre-build.bat
+    - name: Pre Build
+      run: |
+        ./pre-build.bat
