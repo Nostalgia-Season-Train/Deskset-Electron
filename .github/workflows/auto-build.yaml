@@ -35,6 +35,26 @@ jobs:
     # 第四步：构建 Electron
     - name: Build
       run: |
-        gcc -fPIC -shared "./module-bin/main.c" -o "./pre-build/setBottom.dll"
         npm run build-Vite
         npm run build-Electron
+
+    # 第五步：编译二进制依赖，注意 out/deskset-win32-x64 可能随 forge 变化
+    - name: Binary
+      run: |
+        $dist = "out/deskset-win32-x64"
+        gcc -fPIC -shared "./module-bin/main.c" -o "./$dist/setBottom.dll"
+
+    # 第六步：下载数字桌搭后端程序
+    - name: Download Deskset-Back
+      run: |
+        $dist = "out/deskset-win32-x64"
+        $url = "https://github.com/Nostalgia-Season-Train/Deskset-Release/releases/download/Deskset-Back_v0.0.1a/Deskset-Back_v0.0.1a.zip"
+        $outfile = "Deskset-Back.zip"
+        Invoke-WebRequest -Uri $url -OutFile $outfile
+        Expand-Archive -Path .\$outfile -DestinationPath ./$dist/
+
+    # 打印目录树
+    - name: Tree
+      run: |
+        $dist = "out/deskset-win32-x64"
+        tree ./$dist/
