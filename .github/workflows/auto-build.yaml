@@ -52,11 +52,17 @@ jobs:
         Invoke-WebRequest -Uri $url -OutFile $outfile
         Expand-Archive -Path .\$outfile -DestinationPath ./$dist/
 
+    # 第七步：压缩目录
+    - name: Zip
+      run: |
+        $dist = "out/deskset-win32-x64"
+        Compress-Archive -Path "./$dist/" -DestinationPath "./Deskset.zip" -CompressionLevel Optimal
+
     # 发布
     - name: Release
       uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: "out/deskset-win32-x64/**"
+        files: "Deskset.zip"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
