@@ -47,10 +47,11 @@ jobs:
     - name: Download Deskset-Back
       run: |
         $dist = "out/deskset-win32-x64"
-        $url = "https://github.com/Nostalgia-Season-Train/Deskset-Release/releases/download/Deskset-Back_v0.0.1a/Deskset-Back_v0.0.1a.zip"
+        $url = "https://github.com/Nostalgia-Season-Train/Deskset-Release/releases/download/Deskset-Back_v0.0.1b/Deskset-Back_v0.0.1b.zip"
         $outfile = "Deskset-Back.zip"
         Invoke-WebRequest -Uri $url -OutFile $outfile
-        Expand-Archive -Path .\$outfile -DestinationPath ./$dist/
+        Expand-Archive -Path "./$outfile" -DestinationPath "./"
+        Copy-Item -Path "./Deskset-Back/*" -Destination "./$dist/" -Recurse
 
     # 第七步：压缩目录
     - name: Zip
