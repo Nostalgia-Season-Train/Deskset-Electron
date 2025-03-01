@@ -3,7 +3,8 @@ const args = process.argv.slice(2)
 const DEVELOP_ENV = args.includes('-debug') || false
 
 const WIDGET_EXTN = DEVELOP_ENV ? 'vue' : 'js'  // 组件后缀
-const WIDGET_DIR = DEVELOP_ENV ? './src-components' : './components'  // 存放组件的目录
+const WIDGET_DIR = DEVELOP_ENV ? 'src-components' : 'components'  // 存放组件的目录
+const WIDGET_REL = DEVELOP_ENV ? '..' : '../../../..'  // 组件相对位置 = 开发时相对 src : 打包后相对 resources/app.asar/dist/assets
 
 
 // === 检索组件目录，返回组件列表 ===
@@ -37,7 +38,7 @@ for (const filePath of components) {
     id:       id,
     category: category,
     name:     name,
-    relpath: `../../${ WIDGET_DIR }/${ id }.${ WIDGET_EXTN }`,  // file 协议 import(relpath)，构建后相对于 dist/assets
+    relpath: `${ WIDGET_REL }/${ WIDGET_DIR }/${ id }.${ WIDGET_EXTN }`,  // file 协议 import(relpath)
     isDisplay: false
   })
 
