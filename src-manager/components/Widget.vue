@@ -1,11 +1,16 @@
 <script setup>
-// 组件预览：计算 id，找到相关组件并预览
+/* === 组件预览 === */
 import { shallowRef, defineAsyncComponent } from "vue"
-import { widgets, categorys, number } from "../widget_register"
+import { widgets, categorys } from "../widget_register"
 
-const widgetNow = shallowRef(widgets[0])
-const widgetPreview = shallowRef(defineAsyncComponent(widgets[0].content))
+const widgetNow = shallowRef()
+const widgetPreview = shallowRef()
+if (widgets.length > 0) {
+  widgetNow.value = widgets[0]
+  widgetPreview.value = defineAsyncComponent(widgets[0].content)
+}
 
+// 选择组件，计算 id，找到相关组件并预览
 const handleSelect = (key, keyPath) => {
   const id = keyPath[0] + key
 
@@ -20,17 +25,6 @@ const handleSelect = (key, keyPath) => {
   desktop.getWidgetOnDesktop(id)
 }
 
-// 组件属性：按照 is 添加/移除属性 prop
-const widgetProps = shallowRef([
-  {name: '锁定拖动', prop: 'drag-lock'},
-  {name: '禁用交互', prop: 'disable-interaction'},
-  {name: '自动隐藏', prop: 'auto-hide'}
-])
-const widgetPropsIs = ref(Array(widgetProps.value.length).fill(false))  // 属性是否开启
-
-const triggerProp = (id, prop, is) => {
-  desktop.switchProp(id, prop, is)
-}
 
 // 组件信息显示
 import { onBeforeUnmount } from 'vue'
@@ -48,7 +42,9 @@ pageManager.onmessage = async (event) => {
   }
 }
 onBeforeUnmount(() => { pageManager.onmessage = null })  // 解除绑定，否则重进页面后 onmessage 会执行两次以上
-desktop.getWidgetOnDesktop(widgets[0].id)  // 每次进入页面，查询第一个桌面上的组件
+if (widgets.length > 0) {
+  desktop.getWidgetOnDesktop(widgets[0].id)  // 每次进入页面，查询第一个桌面上的组件
+}
 
 
 /* === 组件控制 === */
@@ -63,11 +59,23 @@ const triggerDisplay = (id) => {
     setTimeout(() => triggerProp(id, widgetProp.prop, widgetPropsIs.value[num]), 100)  // 加入延时，确保打开后再应用属性
   }
 }
+
+// 组件属性：按照 is 添加/移除属性 prop
+const widgetProps = shallowRef([
+  {name: '锁定拖动', prop: 'drag-lock'},
+  {name: '禁用交互', prop: 'disable-interaction'},
+  {name: '自动隐藏', prop: 'auto-hide'}
+])
+const widgetPropsIs = ref(Array(widgetProps.value.length).fill(false))  // 属性是否开启
+
+const triggerProp = (id, prop, is) => {
+  desktop.switchProp(id, prop, is)
+}
 </script>
 
 
 <template>
-<el-container>
+<el-container v-if="widgets.length > 0"><!-- 有组件才显示组件菜单 -->
 
   <el-aside width="30%">
     <el-scrollbar>
