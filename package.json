@@ -8,8 +8,7 @@
   "main": "application.cjs",
   "scripts": {
     "dev-Vite": "vite",
-    "dev-Electron": "electron . -debug",
-    "dev-ElectronDist": "vite build && electron .",
+    "dev-Electron": "electron . -dev",
     "build-Vite": "vite build",
     "build-Electron": "electron-forge make"
   },

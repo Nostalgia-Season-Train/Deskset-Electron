@@ -1,6 +1,6 @@
 // === 常量 ===
 const args = process.argv.slice(2)
-const DEVELOP_ENV = args.includes('-debug') || false
+const DEVELOP_ENV = args.includes('-dev') || false
 
 const WIDGET_EXTN = DEVELOP_ENV ? 'vue' : 'js'  // 组件后缀
 const WIDGET_DIR = DEVELOP_ENV ? 'src-components' : 'components'  // 存放组件的目录

@@ -8,6 +8,7 @@ const { DataType, open, close, define } = require('ffi-rs')
 // - 1、加载 Vite 服务器页面，而不是构建的文件
 // - 2、显示主菜单 Menu 方便刷新页面
 const args = process.argv.slice(2)
+const DEVELOP_ENV = args.includes('-dev') || false
 const DEBUG_MODE = args.includes('-debug') || false
 
 
@@ -30,7 +31,7 @@ const createDesktop = () => {
     // focusable: false  // 已废弃，影响输入框 input
   })
 
-  if (DEBUG_MODE) {
+  if (DEVELOP_ENV) {
     win.loadURL('http://127.0.0.1:5173/desktop.html')
   } else {
     win.loadFile('./dist/desktop.html')
@@ -142,13 +143,13 @@ const createManager = () => {
     icon: path.join(__dirname, './static/icons/Deskset.png')
   })
 
-  if (DEBUG_MODE) {
+  if (DEVELOP_ENV) {
     win.loadURL('http://127.0.0.1:5173/manager.html')
   } else {
     win.loadFile('./dist/manager.html')
   }
 
-  if (!DEBUG_MODE) {
+  if (!(DEVELOP_ENV || DEBUG_MODE)) {
     win.removeMenu()  // macOS 上不生效
   }
 
@@ -162,7 +163,7 @@ const createManager = () => {
 // === 应用 App 打开关闭 ===
 // 启动数字桌搭后端
 const { spawn } = require('child_process')
-const back = !DEBUG_MODE ? spawn('./Deskset-Back.exe') : undefined
+const back = !DEVELOP_ENV ? spawn('./Deskset-Back.exe') : undefined
 
 const appOpen = () => {
   open({
