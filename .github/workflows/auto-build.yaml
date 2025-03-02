@@ -36,8 +36,7 @@ jobs:
     # 第四步：构建 Electron
     - name: Build
       run: |
-        npm run build-Vite
-        npm run build-Electron
+        npm run build
 
     # 第五步：编译二进制依赖，注意 out/deskset-win32-x64 可能随 forge 变化
     - name: Binary
