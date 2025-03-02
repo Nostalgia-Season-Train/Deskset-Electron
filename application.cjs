@@ -9,7 +9,10 @@ const { DataType, open, close, define } = require('ffi-rs')
 // - 2、显示主菜单 Menu 方便刷新页面
 const args = process.argv.slice(2)
 const DEVELOP_ENV = args.includes('-dev') || false
-const DEBUG_MODE = args.includes('-debug') || false
+
+// 开发时用 Electron . 运行，打包后用 Electron.exe 运行，只需截取第一个参数
+const prod_args = process.argv.slice(1)
+const DEBUG_MODE = prod_args.includes('-debug') || false
 
 
 // === Desktop 窗口 ===
