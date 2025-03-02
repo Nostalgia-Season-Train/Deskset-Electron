@@ -5,6 +5,7 @@ import { widgets, categorys } from "../../src-components/widget_register"
 
 const widgetNow = shallowRef()
 const widgetPreview = shallowRef()
+const widgetModel = new Object  // 有些组件需要传入 v-model = new Object
 if (widgets.length > 0) {
   widgetNow.value = widgets[0]
   widgetPreview.value = defineAsyncComponent(widgets[0].content)
@@ -100,7 +101,7 @@ const triggerProp = (id, prop, is) => {
     <el-scrollbar>
       <div class="preview">
         <Suspense>
-          <component :is="widgetPreview"/>
+          <component :is="widgetPreview" v-model="widgetModel"/>
         </Suspense>
       </div>
       <!-- 就让 v-model 变化触发 el-switch 切换动画，当成特性 -->

@@ -1,7 +1,14 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, toRaw } from 'vue'
+import { desksetReq } from '../request'
 
 const items = ref([])  // 菜单 dock 保存的元素 items
+
+// 主题保存的菜单栏配置
+const config = defineModel({ type: Object })
+if (Object.keys(config.value).length != 0) {
+  items.value = config.value
+}
 
 const dropFiles = async (event) => {
   const eventfiles = event.dataTransfer.files
@@ -11,10 +18,11 @@ const dropFiles = async (event) => {
       items.value.push(dropfile)
     }
   }
+  config.value = toRaw(items.value)  // 将 Proxy 数组还原回普通数组
 }
 
 const openItem = async (item) => {
-  console.log(item)
+  desksetReq.get(`/v0/quick/open-default/${item.path}`)
 }
 </script>
 
