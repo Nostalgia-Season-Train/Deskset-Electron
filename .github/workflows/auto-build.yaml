@@ -4,8 +4,8 @@ name: Electron Auto Build
 on:
   push:
     tags:
-      # git tag v0.0.0
-      # git push --tags
+      # git tag -a v0.0.0  带注释的标签
+      # git push --follow-tags  连提交带标签一起推送
       - 'v*.*.*'
 
 
