@@ -4,6 +4,8 @@ name: Electron Auto Build
 on:
   push:
     tags:
+      # git tag v0.0.0
+      # git push --tags
       - 'v*.*.*'
 
 
@@ -47,7 +49,7 @@ jobs:
     - name: Download Deskset-Back
       run: |
         $dist = "out/deskset-win32-x64"
-        $url = "https://github.com/Nostalgia-Season-Train/Deskset-Release/releases/download/Deskset-Back_v0.0.1b/Deskset-Back_v0.0.1b.zip"
+        $url = "https://github.com/Nostalgia-Season-Train/Deskset-Release/releases/download/Deskset-Back_v0.0.2/Deskset-Back_v0.0.2.zip"
         $outfile = "Deskset-Back.zip"
         Invoke-WebRequest -Uri $url -OutFile $outfile
         Expand-Archive -Path "./$outfile" -DestinationPath "./"
