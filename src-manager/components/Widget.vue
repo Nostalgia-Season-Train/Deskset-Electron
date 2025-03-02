@@ -1,7 +1,7 @@
 <script setup>
 /* === 组件预览 === */
 import { shallowRef, defineAsyncComponent } from "vue"
-import { widgets, categorys } from "../widget_register"
+import { widgets, categorys } from "../../src-components/widget_register"
 
 const widgetNow = shallowRef()
 const widgetPreview = shallowRef()

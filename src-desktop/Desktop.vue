@@ -2,7 +2,7 @@
 /* === 组件 === */
 import { shallowRef, triggerRef } from 'vue'
 import { defineAsyncComponent } from 'vue'
-import { widgets as rawWidgets } from './widget_register'
+import { widgets as rawWidgets } from '../src-components/widget_register'
 
 const widgets = shallowRef(rawWidgets)
 
