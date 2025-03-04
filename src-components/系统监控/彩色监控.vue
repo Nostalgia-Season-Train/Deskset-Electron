@@ -116,8 +116,8 @@ useIntervalFn(device, 1000)
     </div>
     <div>
       <div class="text">Network</div>
-      <div class="num">S: {{ numNetwork.sent }} Kbps</div>
-      <div class="num">R: {{ numNetwork.recv }} Kbps</div>
+      <div class="num">S: {{ numNetwork.sent }}.0 Kbps</div>
+      <div class="num">R: {{ numNetwork.recv }}.0 Kbps</div>
     </div>
   </div>
 </div>
