@@ -3,10 +3,12 @@ import { ref } from 'vue'
 import { desksetReq } from '../request'
 
 const battery_percent = ref(100)
+const is_plug = ref(true)
 
 const refresh = async () => {
   const rep = await desksetReq.get('/v0/device/battery')
   battery_percent.value = rep.data.data.percent
+  is_plug.value = rep.data.data.plug
 }
 refresh()
 
@@ -18,10 +20,12 @@ useIntervalFn(refresh, 1000)
 
 
 <template>
-<div>
+<div style="display: flex; align-items: center;">
   <div class="battery">
     <div class="charging"></div>
   </div>
+  <span class="num">{{ battery_percent }}%</span>
+  <span class="text" v-if="is_plug">充电中</span>
 </div>
 </template>
 
@@ -33,7 +37,7 @@ useIntervalFn(refresh, 1000)
   height: 25px;
   box-sizing: border-box;  /* 确保总宽总高为 60 * 25 */
 
-  padding: 2px;
+  padding: 2.4px;
 
   border: 3px solid #FFF;
 }
@@ -54,5 +58,24 @@ useIntervalFn(refresh, 1000)
   width: v-bind(battery_percent + '%');
   height: 100%;
   background-color: white;
+}
+
+.num::before {
+  content: '';
+  display: inline-block;  /* 与百分比同一行撑开间距 */
+  width: 20px;
+}
+.num {
+  color: white;
+  font-size: 36px;
+}
+.text::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+}
+.text {
+  color: #FFFA;
+  font-size: 24px;
 }
 </style>
