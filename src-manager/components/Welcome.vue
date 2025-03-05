@@ -1,6 +1,6 @@
 <script setup>
-const openReleasePage = () => {
-  electron.openBrowser("https://github.com/Nostalgia-Season-Train/Deskset-Release")
+const openReleasePage = (url) => {
+  window.electron.openBrowser(url)
 }
 </script>
 
@@ -31,8 +31,18 @@ const openReleasePage = () => {
   </div>
 
   <h2>下载</h2>
-  <div>
-    发布页面：<a @click="openReleasePage()" href="">Deskset-Release</a>
+  <div style="color: #F44336;">
+    注：数字桌搭跟桌面图标有些冲突，使用前需要隐藏桌面图标
+  </div>
+  <div>Electron 版本：
+    <a href="" style="color: #616161;"
+      @click="openReleasePage('https://github.com/Nostalgia-Season-Train/Deskset-Electron')"
+    >Deskset-Electron</a>
+  </div>
+  <div>Tauri 版本（开发中）：
+    <a href="" style="color: #616161;"
+      @click="openReleasePage('https://github.com/Nostalgia-Season-Train/Deskset-Tauri')"
+    >Deskset-Tauri</a>
   </div>
 
   <h2>问答</h2>
