@@ -153,5 +153,6 @@ useIntervalFn(device, 1000)
 .num {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;  /* 避免换行撑开高度 */
 }
 </style>
