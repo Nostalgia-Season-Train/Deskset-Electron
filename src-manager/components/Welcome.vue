@@ -43,7 +43,19 @@ const openReleasePage = (url) => {
     <a href="" style="color: #616161;"
       @click="openReleasePage('https://github.com/Nostalgia-Season-Train/Deskset-Tauri')"
     >Deskset-Tauri</a>
+  <div>Gitee 地址：
+    <a href="" style="color: #616161;"
+      @click="openReleasePage('https://gitee.com/Nostalgia-Season-Train/Deskset-Electron')"
+    >Deskset-Electron</a>
+    <span>、</span>
+    <a href="" style="color: #616161;"
+      @click="openReleasePage('https://gitee.com/Nostalgia-Season-Train/Deskset-Tauri')"
+    >Deskset-Tauri</a>
   </div>
+  </div>
+
+  <h2>交流</h2>
+  <div>QQ 群：770889923</div>
 
   <h2>问答</h2>
   <div>问：为什么不采用 Qt、WPF 开发？而是占用内存和硬盘更高的 Web 技术</div>
@@ -65,6 +77,7 @@ const openReleasePage = (url) => {
 
 .container {
   padding: 10px;
+  user-select: text;  /* 允许复制文字 */
 }
 
 .center>div {
