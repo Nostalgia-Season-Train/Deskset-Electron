@@ -128,6 +128,25 @@ const useTheme = async (themeName) => {
       await setWidget({widgetId: widgetId, isDisplay: true, widgetClass: widget?.class, widgetStyle: widget?.style, widgetModel: widget?.model})
     }
   }
+
+  // 应用 css 样式
+
+  // 清除上次样式
+  const lastStyle = document.querySelector('link[deskset="themeStyle"]')
+  if (lastStyle != undefined) {
+    lastStyle.remove()
+  }
+
+  // 当主题文件夹存在 .css 样式文件时，应用样式
+  const style = theme?.style
+  if (style != undefined) {
+    const linkStyle = document.createElement('link')
+    linkStyle.setAttribute('deskset', 'themeStyle')
+    linkStyle.rel = 'stylesheet'
+    linkStyle.href = style
+
+    document.head.appendChild(linkStyle)  // 附：打包后，样式更改不会实时生效
+  }
 }
 
 

@@ -1,3 +1,8 @@
+/* === 环境 === */
+const args = process.argv.slice(2)
+const DEVELOP_ENV = args.includes('-dev') || false
+
+
 /* === 解释 === */
 // 主题：一个主题对应一个文件夹
 // - 主题库   theme/
@@ -7,7 +12,8 @@
 const THEME_LIB = './themes'      // 程序用路径，对应 electron.exe 同级目录
 // const THEME_LIB_VITE = '/themes'  // 网页用路径，对应 vite.config.js 同级目录
 // const THEME_LIB_VITE = '../themes'  // 构建出的网页所用路径，对应 dist 同级目录
-const THEME_LIB_VITE = '../../../themes'  // 打包后的路径...相对于 resources/app.asar/dist
+const THEME_LIB_VITE = DEVELOP_ENV ? '/themes' : '../../../themes'  // 打包后的路径...相对于 resources/app.asar/dist
+
 
 /* === 函数 === */
 const fs = require('fs').promises
@@ -34,7 +40,7 @@ const readTheme = async (themeName) => {
     throw new Error(`Theme ${themeName} lack preview or data`)
   }
 
-  // 生成：主题预览（路径）
+  // 读取：主题预览（路径）
   const preview = path.join(themeDirVite, 'preview.png')
 
   // 读取：主题数据
@@ -42,10 +48,15 @@ const readTheme = async (themeName) => {
   const dataRaw = await fs.readFile(dataPath, 'utf8')
   const data = JSON.parse(dataRaw)
 
+  // 读取：主题样式（路径）
+  const stylePath = path.join(themeDirVite, 'style.css')
+  const style = files.includes('style.css') ? stylePath : undefined
+
   const theme = {
     name:    themeName,
     preview: preview,
-    data:    data
+    data:    data,
+    style:   style
   }
 
   return theme
