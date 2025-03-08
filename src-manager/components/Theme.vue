@@ -121,6 +121,10 @@ const deleteTheme = (themeName) => {
           <span>保存日期：</span>
           <span>{{ theme?.data?.savetime }}</span>
         </div>
+        <div class="description" v-if="theme?.data?.description != undefined">
+          <span>描述：</span>
+          <span>{{ theme?.data?.description }}</span>
+        </div>
       </div>
       <div class="button">
         <el-button type="primary" plain @click="useTheme(theme?.name)">
@@ -191,6 +195,10 @@ const deleteTheme = (themeName) => {
 }
 
 .theme-container>.right>.word>.save-time {
+  font-size: 14px;
+  color: gray;
+}
+.theme-container>.right>.word>.description {
   font-size: 14px;
   color: gray;
 }
