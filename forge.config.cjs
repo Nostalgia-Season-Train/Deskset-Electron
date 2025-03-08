@@ -18,6 +18,7 @@ module.exports = {
       '/api', '/components', '/themes',  // 接口、组件、主题
       '/i18n',                           // 翻译
       // 后端及其依赖
+      '/Deskset-Back',
       '/runtime',
       '/site-packages',
       'Deskset-Back.exe',
